@@ -23,9 +23,16 @@
                 <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="#"><i class="fas fa-search"></i></a>
-                <a href="#"><i class="fas fa-user"></i></a>
-                <a href="#"><i class="fas fa-shopping-bag"></i></a>
+                <a href="#" id="search-icon"><i class="fas fa-search"></i></a>
+                <div class="profile-icon-container">
+                    <a href="#" id="profile-icon"><i class="fas fa-user"></i></a>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                        <a href="#">My Account</a>
+                    </div>
+                </div>
+                <a href="#" id="cart-icon"><i class="fas fa-shopping-bag"></i></a>
             </div>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -53,21 +60,18 @@
                     <p class="price">$15.00</p>
                     <button class="btn">Add to Cart</button>
                 </div>
-
                 <div class="product-card">
                     <img src="https://via.placeholder.com/300x300.png?text=Luxe+Body+Wave+Wig" alt="Luxe Body Wave Wig">
                     <h3>Luxe Body Wave Wig</h3>
                     <p class="price">$250.00</p>
                     <button class="btn">Add to Cart</button>
                 </div>
-
                 <div class="product-card">
                     <img src="https://via.placeholder.com/300x300.png?text=Silk+Night+Gown" alt="Silk Night Gown">
                     <h3>Silk Night Gown</h3>
                     <p class="price">$45.00</p>
                     <button class="btn">Add to Cart</button>
                 </div>
-
                 <div class="product-card">
                     <img src="https://via.placeholder.com/300x300.png?text=Velvet+Scrunchie" alt="Velvet Scrunchie">
                     <h3>Velvet Scrunchie</h3>
@@ -96,13 +100,13 @@
         </section>
 
          <section class="newsletter-section">
-    <h2>Join Our Beauty Club</h2>
-    <p>Get exclusive deals, new product alerts, and beauty tips sent to your inbox.</p>
-    <form class="newsletter-form" action="https://formspree.io/f/mjkelwdv" method="POST">
-        <input type="email" name="email" placeholder="Enter your email" required> 
-        <button type="submit" class="btn">Subscribe</button>
-    </form>
-</section>
+            <h2>Join Our Beauty Club</h2>
+            <p>Get exclusive deals, new product alerts, and beauty tips sent to your inbox.</p>
+            <form class="newsletter-form" action="https://formspree.io/f/mjkelwdv" method="POST">
+                <input type="email" name="email" placeholder="Enter your email" required> 
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </section>
     </main>
 
     <footer id="contact">
@@ -131,6 +135,31 @@
             <p>&copy; 2025 Feel Divine. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <div id="search-overlay" class="search-overlay">
+        <span class="close-btn" id="close-search">&times;</span>
+        <div class="search-overlay-content">
+            <input type="search" placeholder="Search for products...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Bag</h3>
+            <span class="close-btn" id="close-cart">&times;</span>
+        </div>
+        <div class="cart-body">
+            <p class="empty-cart-message">Your cart is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="subtotal">
+                <span>Subtotal:</span>
+                <span>$0.00</span>
+            </div>
+            <a href="#" class="btn checkout-btn">Proceed to Checkout</a>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
