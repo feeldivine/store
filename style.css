@@ -81,6 +81,7 @@ body {
     color: #333;
     font-size: 1.2rem;
     transition: color 0.3s ease;
+    position: relative; /* For badge positioning */
 }
 
 .nav-icons a:hover {
@@ -93,7 +94,7 @@ body {
 
 .profile-dropdown {
     position: absolute;
-    top: 100%;
+    top: 150%; /* Position it a bit lower */
     right: 0;
     background-color: #fff;
     min-width: 150px;
@@ -106,10 +107,12 @@ body {
     transition: all 0.3s ease;
 }
 
-.profile-icon-container:hover .profile-dropdown {
+/* MODIFIED: Changed from hover to a class for JS click control */
+.profile-dropdown.show {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    top: 100%;
 }
 
 .profile-dropdown a {
@@ -497,8 +500,62 @@ footer {
 .cart-body {
     flex: 1;
     padding: 1rem;
+    overflow-y: auto;
+}
+.empty-cart-message {
     text-align: center;
     color: #666;
+    margin-top: 2rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.cart-item-image img {
+    border-radius: 5px;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+.cart-item-details h4 {
+    margin: 0 0 5px;
+    font-size: 1rem;
+}
+.cart-item-price {
+    color: #d4357a;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.quantity-btn {
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.remove-item {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.remove-item:hover {
+    color: red;
 }
 
 .cart-footer {
