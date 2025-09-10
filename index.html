@@ -9,6 +9,37 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Added styles for profile dropdown functionality */
+        .profile-icon-container {
+            position: relative;
+        }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            min-width: 150px;
+        }
+        .profile-dropdown.show {
+            display: block;
+        }
+        .profile-dropdown a {
+            display: block;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .profile-dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
 
@@ -113,7 +144,7 @@
                     <li><a href="#about" onclick="showModal('about')">About Us</a></li>
                     <li><a href="#shipping" onclick="showModal('shipping')">Shipping & Returns</a></li>
                     <li><a href="#privacy" onclick="showModal('privacy')">Privacy Policy</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="mailto:feeldivine@icloud.com">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-social">
@@ -266,11 +297,27 @@
             document.getElementById('modal').style.display = 'none';
         }
         
-        // Close modal when clicking outside of it
+        // --- New code for profile dropdown ---
+        const profileIcon = document.getElementById('profile-icon');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileIcon.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevents the link from navigating
+            profileDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown and modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('modal');
             if (event.target == modal) {
                 modal.style.display = 'none';
+            }
+
+            // Check if the click is outside the profile icon and its dropdown
+            if (!profileIcon.contains(event.target) && !profileDropdown.contains(event.target)) {
+                if (profileDropdown.classList.contains('show')) {
+                    profileDropdown.classList.remove('show');
+                }
             }
         }
     </script>
