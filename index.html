@@ -78,6 +78,7 @@
             font-weight: 500;
             position: relative;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
 
         .nav-link:hover {
@@ -200,8 +201,16 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* THIS IS THE CHANGE FOR DESKTOP */
             gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        #no-results-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            display: none;
             margin-top: 2rem;
         }
 
@@ -211,9 +220,13 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
             position: relative;
             overflow: hidden;
+        }
+        
+        .product-card.hidden {
+            display: none;
         }
 
         .product-card:hover {
@@ -651,13 +664,17 @@
             animation-duration: 0.4s;
         }
         
-        #info-modal .modal-content {
+        #info-modal .modal-content, #checkout-modal .modal-content {
              max-height: 80vh;
              overflow-y: auto;
         }
         
         #auth-modal .modal-content {
             max-width: 400px;
+        }
+        
+        #checkout-modal .modal-content {
+            max-width: 500px;
         }
 
 
@@ -705,12 +722,7 @@
             text-decoration: none;
         }
         
-        /* Auth Form Styles */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+        /* Form Styles */
         .form-group {
             display: flex;
             flex-direction: column;
@@ -731,6 +743,13 @@
         .form-group input:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(212, 53, 122, 0.1);
+        }
+        
+        /* Auth Form Styles */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
         .form-switch {
             text-align: center;
@@ -753,10 +772,57 @@
             margin-top: 1rem;
             display: none;
         }
-        
         #my-account-modal p {
             text-align: center;
             font-size: 1.1rem;
+        }
+        
+        /* Checkout Modal Styles */
+        .checkout-step {
+            display: none;
+        }
+        .checkout-step.active {
+            display: block;
+        }
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        #shipping-form, #payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .paystack-logo {
+            height: 25px;
+            margin-right: 10px;
+        }
+        #payment-form .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .confirmation-message {
+            text-align: center;
+        }
+        .confirmation-message p {
+            margin-bottom: 5px;
         }
 
         /* Responsive Design */
@@ -801,6 +867,10 @@
                 transform: translateY(-9px) rotate(-45deg);
             }
             
+            .product-grid {
+                grid-template-columns: 1fr; /* THIS IS THE CHANGE FOR MOBILE */
+            }
+            
             .section-title, .newsletter-section h2 {
                 font-size: 2rem;
             }
@@ -826,14 +896,14 @@
                 <li class="nav-item"><a href="#wigs" class="nav-link">Wigs</a></li>
                 <li class="nav-item"><a href="#lipgloss" class="nav-link">Lipgloss</a></li>
                 <li class="nav-item"><a href="#nightwear" class="nav-link">Night Wear</a></li>
-                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a onclick="showInfoModal('contact-us')" class="nav-link">Contact Us</a></li>
             </ul>
             <div class="nav-icons">
                 <a href="#" id="search-icon" aria-label="Search for products"><i class="fas fa-search"></i></a>
                 <div class="profile-icon-container">
                     <a href="#" id="profile-icon" aria-label="User account"><i class="fas fa-user"></i></a>
                     <div class="profile-dropdown" id="profile-dropdown">
-                        <!-- Dropdown links are now generated by JavaScript -->
+                        <!-- Dropdown links are generated by JavaScript -->
                     </div>
                 </div>
                 <a href="#" id="cart-icon" aria-label="View shopping cart"><i class="fas fa-shopping-bag"></i></a>
@@ -875,6 +945,7 @@
                     <button class="btn">Add to Cart</button>
                 </div>
             </div>
+            <p id="no-results-message">Sorry, no products found matching your search.</p>
         </section>
 
         <section class="category-section">
@@ -905,7 +976,7 @@
         </section>
     </main>
 
-    <footer id="contact">
+    <footer id="contact-section">
         <div class="footer-container">
             <div class="footer-about">
                 <h3>Feel Divine</h3>
@@ -917,7 +988,7 @@
                     <li><a onclick="showInfoModal('about')">About Us</a></li>
                     <li><a onclick="showInfoModal('shipping')">Shipping & Returns</a></li>
                     <li><a onclick="showInfoModal('privacy')">Privacy Policy</a></li>
-                    <li><a href="mailto:feeldivine@icloud.com">Contact</a></li>
+                    <li><a onclick="showInfoModal('contact-us')">Contact Us</a></li>
                 </ul>
             </div>
             <div class="footer-social">
@@ -936,8 +1007,8 @@
     <div id="search-overlay" class="search-overlay">
         <span class="close-btn" id="close-search">&times;</span>
         <div class="search-overlay-content">
-            <input type="search" placeholder="Search for products...">
-            <button aria-label="Submit search"><i class="fas fa-search"></i></button>
+            <input type="search" placeholder="Search for products..." id="search-input">
+            <button aria-label="Submit search" id="search-button"><i class="fas fa-search"></i></button>
         </div>
     </div>
 
@@ -951,9 +1022,9 @@
         <div class="cart-footer">
             <div class="subtotal">
                 <span>Subtotal:</span>
-                <span>₦0.00</span>
+                <span id="cart-subtotal">₦0.00</span>
             </div>
-            <a href="#" class="btn checkout-btn">Proceed to Checkout</a>
+            <button class="btn checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
 
@@ -972,6 +1043,77 @@
             <div class="modal-body"></div>
         </div>
     </div>
+    
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <!-- Step 1: Shipping Details -->
+                <div id="checkout-step-1" class="checkout-step active">
+                    <h2>Checkout</h2>
+                    <h3>Order Summary</h3>
+                    <div id="order-summary"></div>
+                    <div class="order-summary-total">
+                        <span>Total:</span>
+                        <span id="checkout-total"></span>
+                    </div>
+                    <hr style="margin: 1.5rem 0;">
+                    <h3>Shipping Information</h3>
+                    <form id="shipping-form">
+                        <div class="form-group">
+                            <label for="shipping-name">Full Name</label>
+                            <input type="text" id="shipping-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-address">Address</label>
+                            <input type="text" id="shipping-address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-city">City</label>
+                            <input type="text" id="shipping-city" required>
+                        </div>
+                        <button type="submit" class="btn">Proceed to Payment</button>
+                    </form>
+                </div>
+
+                <!-- Step 2: Payment Simulation -->
+                <div id="checkout-step-2" class="checkout-step">
+                    <h2>Payment</h2>
+                    <p>This is a simulated payment gateway.</p>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" placeholder="Use test card: 4242 4242 4242 4242" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="card-expiry">Expiry (MM/YY)</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="card-cvc">CVC</label>
+                            <input type="text" id="card-cvc" placeholder="123" required>
+                        </div>
+                        <p class="error-message" id="payment-error"></p>
+                        <button type="submit" class="btn">
+                             <img src="https://assets.paystack.com/assets/img/logos/merchants/header-logo.svg" alt="Paystack" class="paystack-logo">
+                             Pay <span id="payment-amount"></span>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Step 3: Confirmation -->
+                 <div id="checkout-step-3" class="checkout-step">
+                    <div class="confirmation-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="confirmation-message">
+                        <h2>Payment Successful!</h2>
+                        <p>Thank you for your purchase.</p>
+                        <p>Your order confirmation has been sent to your email.</p>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
 
 
 <script>
@@ -983,6 +1125,8 @@
         const searchIcon = document.getElementById('search-icon');
         const searchOverlay = document.getElementById('search-overlay');
         const closeSearch = document.getElementById('close-search');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
         const cartIcon = document.getElementById('cart-icon');
         const cartSidebar = document.getElementById('cart-sidebar');
         const closeCart = document.getElementById('close-cart');
@@ -991,8 +1135,8 @@
         const addToCartButtons = document.querySelectorAll('.product-card .btn');
         const navLinks = document.querySelectorAll('a.nav-link[href^="#"]');
         const newsletterForm = document.querySelector('.newsletter-form');
-        const searchForm = document.querySelector('.search-overlay-content');
         const categoryCards = document.querySelectorAll('.category-card');
+        const checkoutBtn = document.querySelector('.checkout-btn');
 
         // --- STATE ---
         let cart = JSON.parse(localStorage.getItem('feelDivineCart')) || [];
@@ -1046,30 +1190,44 @@
             }));
         }
 
-        // Search Overlay Functionality
+        // Search Overlay and Filtering Functionality
         if (searchIcon && searchOverlay && closeSearch) {
             searchIcon.addEventListener('click', (e) => {
                 e.preventDefault();
                 searchOverlay.style.display = 'flex';
-                const searchInput = searchOverlay.querySelector('input');
-                if (searchInput) {
-                    setTimeout(() => searchInput.focus(), 100);
-                }
+                setTimeout(() => searchInput.focus(), 100);
             });
-
+            
             const closeSearchOverlay = () => searchOverlay.style.display = 'none';
             closeSearch.addEventListener('click', closeSearchOverlay);
-            searchOverlay.addEventListener('click', (e) => {
-                if (e.target === searchOverlay) {
-                    closeSearchOverlay();
-                }
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && searchOverlay.style.display === 'flex') {
-                    closeSearchOverlay();
-                }
+            
+            searchInput.addEventListener('input', performSearch);
+            searchButton.addEventListener('click', (e) => {
+                 e.preventDefault();
+                 performSearch();
+                 closeSearchOverlay();
             });
         }
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+            const noResultsMessage = document.getElementById('no-results-message');
+            let foundItems = 0;
+
+            products.forEach(product => {
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    product.classList.remove('hidden');
+                    foundItems++;
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+            
+            noResultsMessage.style.display = foundItems === 0 ? 'block' : 'none';
+        }
+
         
         // Cart Sidebar Functionality
         if (cartIcon && cartSidebar && closeCart) {
@@ -1174,13 +1332,17 @@
             saveCartToStorage(); // Save to localStorage on every update
         }
 
+        function getSubtotal() {
+            return cart.reduce((sum, item) => {
+                const price = parseFloat(item.price.replace('₦', ''));
+                return sum + (price * item.quantity);
+            }, 0);
+        }
+
         function updateSubtotal() {
-            const subtotalElement = document.querySelector('.subtotal span:last-child');
+            const subtotalElement = document.getElementById('cart-subtotal');
             if (subtotalElement) {
-                const total = cart.reduce((sum, item) => {
-                    const price = parseFloat(item.price.replace('₦', ''));
-                    return sum + (price * item.quantity);
-                }, 0);
+                const total = getSubtotal();
                 subtotalElement.textContent = `₦${total.toFixed(2)}`;
             }
         }
@@ -1222,23 +1384,37 @@
         // Smooth Scrolling for Navigation Links
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop - 80; // Header offset
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(href);
+                    if (targetElement) {
+                        const offsetTop = targetElement.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             });
         });
 
+        // Checkout Process
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    showInfoModal('custom-alert', { title: 'Empty Cart', message: 'Your cart is empty. Please add items before checking out.' });
+                    return;
+                }
+                cartSidebar.classList.remove('active');
+                showCheckoutModal();
+            });
+        }
+        
         // Newsletter Form Enhancement
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', (e) => {
-                 e.preventDefault(); // Prevent actual submission for this demo
+                 e.preventDefault(); 
                 const submitButton = newsletterForm.querySelector('button[type="submit"]');
                 const originalText = submitButton.textContent;
                 submitButton.textContent = 'Subscribing...';
@@ -1254,77 +1430,6 @@
             });
         }
 
-        // Search Functionality
-        if (searchForm) {
-            const searchInput = searchForm.querySelector('input');
-            const performSearch = () => {
-                const searchTerm = searchInput.value.trim().toLowerCase();
-                if (!searchTerm) return;
-
-                const products = document.querySelectorAll('.product-card');
-                let found = false;
-                products.forEach(product => {
-                    const productName = product.querySelector('h3').textContent.toLowerCase();
-                    const isMatch = productName.includes(searchTerm);
-                     product.style.transition = 'all 0.3s ease'; // Add transition for smooth effect
-                    product.style.border = isMatch ? '3px solid var(--primary-color)' : '';
-                    product.style.transform = isMatch ? 'scale(1.02)' : '';
-                    if (isMatch) found = true;
-                });
-
-                closeSearch.click();
-
-                if (found) {
-                    document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    alert(`Sorry, no products found for "${searchTerm}"`);
-                }
-                
-                setTimeout(() => {
-                    products.forEach(product => {
-                        product.style.border = '';
-                        product.style.transform = '';
-                    });
-                }, 5000);
-                searchInput.value = '';
-            };
-
-            searchForm.querySelector('button').addEventListener('click', performSearch);
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    performSearch();
-                }
-            });
-        }
-
-        // Category Card Click Handlers
-        categoryCards.forEach(card => {
-            card.addEventListener('click', () => {
-                document.getElementById('shop')?.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // Intersection Observer for Animations on scroll
-        if ('IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            const animatedElements = document.querySelectorAll('.product-card, .category-card, .footer-container > div');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
 
         // --- INITIALIZE ---
         updateCartDisplay();
@@ -1333,7 +1438,7 @@
 
     // --- GLOBAL MODAL & AUTH FUNCTIONS ---
 
-    function showInfoModal(type) {
+    function showInfoModal(type, data = {}) {
         const modal = document.getElementById('info-modal');
         const modalBody = modal.querySelector('.modal-body');
         let title = '';
@@ -1342,21 +1447,61 @@
         switch (type) {
             case 'about':
                 title = 'About Feel Divine';
-                content = `<p>Welcome to Feel Divine, your ultimate destination for high-quality female essentials...</p>`;
+                content = `
+                    <p>Welcome to Feel Divine, your ultimate destination for high-quality female essentials. Founded in 2025, our mission is to empower women by providing products that inspire confidence and celebrate beauty in all its forms.</p>
+                    <p>From luxurious wigs and vibrant lip glosses to comfortable and chic nightwear, every item in our collection is carefully selected to ensure it meets our high standards of quality and style. We believe that feeling divine is a right, not a luxury.</p>
+                    <p>Thank you for joining our community. We are excited to be a part of your beauty journey.</p>
+                `;
                 break;
             case 'shipping':
                 title = 'Shipping & Returns Policy';
-                content = `<h3>Shipping Information</h3><ul><li>Standard Shipping: 5-7 business days.</li>...</ul>`;
+                content = `
+                    <h3>Shipping Information</h3>
+                    <p>We are pleased to offer shipping across the country. Please allow the following timeframes:</p>
+                    <ul>
+                        <li><strong>Standard Shipping:</strong> 5-7 business days.</li>
+                        <li><strong>Express Shipping:</strong> 2-3 business days.</li>
+                    </ul>
+                    <p>Orders are typically processed and dispatched within 24 hours of being placed. You will receive a confirmation email with tracking information once your order is on its way.</p>
+                    
+                    <h3>Returns & Exchanges</h3>
+                    <p>Your satisfaction is our priority. If you're not completely in love with your purchase, you may return it within 14 days of receipt for a full refund or exchange, provided the items are unused, in their original packaging, and in the same condition that you received them.</p>
+                    <p>To initiate a return, please contact our support team at <strong>feeldivine@icloud.com</strong> with your order number and the reason for the return.</p>
+                `;
                 break;
             case 'privacy':
                 title = 'Privacy Policy';
-                content = `<p>Feel Divine is committed to protecting your privacy...</p>`;
+                content = `
+                    <p>Feel Divine is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Feel Divine.</p>
+                    <h3>Information We Collect</h3>
+                    <p>We collect information you provide directly to us, such as when you create an account, place an order, or subscribe to our newsletter. This may include your name, email address, shipping address, and payment information.</p>
+                    <h3>How We Use Your Information</h3>
+                    <p>We use the information we collect to:</p>
+                    <ul>
+                        <li>Process and fulfill your orders.</li>
+                        <li>Communicate with you about your orders and provide customer support.</li>
+                        <li>Send you promotional materials and updates, if you opt-in.</li>
+                        <li>Improve and personalize your shopping experience.</li>
+                    </ul>
+                    <p>We do not sell or share your personal information with third parties except as necessary to provide our services (e.g., to shipping carriers). For any questions about our privacy practices, please contact us at <strong>feeldivine@icloud.com</strong>.</p>
+                `;
+                break;
+            case 'contact-us':
+                title = 'Contact Us';
+                content = `<p style="text-align: center; font-size: 1.1rem;">For any questions, support, or inquiries, please send an email to:</p>
+                           <p style="text-align: center; font-size: 1.2rem; font-weight: bold; margin-bottom: 2rem;">feeldivine@icloud.com</p>
+                           <a href="mailto:feeldivine@icloud.com" class="btn" style="text-align: center; width: auto; display: inline-block; margin: 0 auto; display: block;">Open Email Client</a>`;
+                break;
+            case 'custom-alert':
+                title = data.title || 'Alert';
+                content = `<p style="text-align:center;">${data.message}</p>`;
                 break;
         }
         modalBody.innerHTML = `<h2>${title}</h2>${content}`;
         modal.style.display = 'block';
     }
-
+    
+    // Auth Modal Logic
     function showAuthModal(type) {
         const modal = document.getElementById('auth-modal');
         const modalBody = modal.querySelector('.modal-body');
@@ -1417,7 +1562,6 @@
         modalBody.innerHTML = content;
         modal.style.display = 'block';
 
-        // Add event listeners for new forms
         if (type === 'login') {
             document.getElementById('login-form').addEventListener('submit', handleLogin);
         }
@@ -1425,12 +1569,109 @@
             document.getElementById('register-form').addEventListener('submit', handleRegister);
         }
     }
+    
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const errorEl = document.getElementById('login-error');
+        const storedUser = JSON.parse(localStorage.getItem('feelDivineRegisteredUser'));
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
+        if (storedUser && storedUser.email === email && storedUser.password === password) {
+            localStorage.setItem('feelDivineUser', JSON.stringify({ name: storedUser.name, email: email }));
+            location.reload();
+        } else {
+            errorEl.textContent = 'Invalid email or password.';
+            errorEl.style.display = 'block';
+        }
+    }
+
+    function handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const registeredUser = { name, email, password };
+        localStorage.setItem('feelDivineRegisteredUser', JSON.stringify(registeredUser));
+        localStorage.setItem('feelDivineUser', JSON.stringify({ name, email }));
+        location.reload();
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('feelDivineUser');
+        location.reload();
+    }
+
+
+    // Checkout Modal Logic
+    function showCheckoutModal() {
+        const modal = document.getElementById('checkout-modal');
+        const summaryContainer = document.getElementById('order-summary');
+        const totalEl = document.getElementById('checkout-total');
+        const paymentAmountEl = document.getElementById('payment-amount');
+        let cart = JSON.parse(localStorage.getItem('feelDivineCart')) || []; // Ensure we have the latest cart
+
+        document.getElementById('checkout-step-1').classList.add('active');
+        document.getElementById('checkout-step-2').classList.remove('active');
+        document.getElementById('checkout-step-3').classList.remove('active');
+        
+        summaryContainer.innerHTML = cart.map(item => `
+            <div class="order-summary-item">
+                <span>${item.name} (x${item.quantity})</span>
+                <span>${item.price}</span>
+            </div>
+        `).join('');
+
+        const subtotal = getSubtotal(cart);
+        totalEl.textContent = `₦${subtotal.toFixed(2)}`;
+        paymentAmountEl.textContent = `₦${subtotal.toFixed(2)}`;
+        
+        modal.style.display = 'block';
     }
     
-    // Setup close buttons for both modals
+    document.getElementById('shipping-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('checkout-step-1').classList.remove('active');
+        document.getElementById('checkout-step-2').classList.add('active');
+    });
+
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+        const errorEl = document.getElementById('payment-error');
+        
+        if (cardNumber === '4242424242424242') {
+            errorEl.style.display = 'none';
+            document.getElementById('checkout-step-2').classList.remove('active');
+            document.getElementById('checkout-step-3').classList.add('active');
+            
+            // Clear cart globally and update UI
+            window.cart = [];
+            // This needs to call the globally accessible updateCartDisplay
+            const globalUpdate = new CustomEvent('cart-cleared');
+            document.dispatchEvent(globalUpdate);
+
+            setTimeout(() => {
+                document.getElementById('checkout-modal').style.display = 'none';
+            }, 4000);
+
+        } else {
+            errorEl.textContent = 'Invalid card number. Please use the test card.';
+            errorEl.style.display = 'block';
+        }
+    });
+
+    // Listen for the custom event to update the cart display globally
+    document.addEventListener('cart-cleared', () => {
+        let cart = []; // re-assign local cart variable in this scope
+        const cartBody = document.querySelector('.cart-body');
+        cartBody.innerHTML = '<p class="empty-cart-message">Your bag is currently empty.</p>';
+        updateSubtotal(); // this function will use the now-empty cart
+        updateCartIcon();
+        saveCartToStorage(); // this saves the empty cart
+    });
+
+    // Generic Modal Close Logic
     document.querySelectorAll('.modal .close').forEach(btn => {
         btn.onclick = () => {
             btn.closest('.modal').style.display = 'none';
@@ -1443,45 +1684,13 @@
         }
     }
     
-    function handleLogin(e) {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        const errorEl = document.getElementById('login-error');
-        
-        // This is a simulation. In a real app, you'd check this against a database.
-        const storedUser = JSON.parse(localStorage.getItem('feelDivineRegisteredUser'));
-
-        if (storedUser && storedUser.email === email && storedUser.password === password) {
-            localStorage.setItem('feelDivineUser', JSON.stringify({ name: storedUser.name, email: email }));
-            location.reload(); // Reload to update UI
-        } else {
-            errorEl.textContent = 'Invalid email or password.';
-            errorEl.style.display = 'block';
-        }
+    // Helper function to get subtotal from a given cart array
+    function getSubtotal(cartArray) {
+        return cartArray.reduce((sum, item) => {
+            const price = parseFloat(item.price.replace('₦', ''));
+            return sum + (price * item.quantity);
+        }, 0);
     }
-
-    function handleRegister(e) {
-        e.preventDefault();
-        const name = document.getElementById('register-name').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-        
-        // Simulate registration by storing credentials in localStorage
-        const registeredUser = { name, email, password };
-        localStorage.setItem('feelDivineRegisteredUser', JSON.stringify(registeredUser));
-        
-        // Automatically log the user in after registration
-        localStorage.setItem('feelDivineUser', JSON.stringify({ name, email }));
-        
-        location.reload(); // Reload to reflect login state
-    }
-
-    function handleLogout() {
-        localStorage.removeItem('feelDivineUser');
-        location.reload(); // Reload to update UI
-    }
-
 </script>
 </body>
 </html>
