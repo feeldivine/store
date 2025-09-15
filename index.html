@@ -1,90 +1,1148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Feel Divine</title>
-  <style>
-    .checkout-step { display: none; }
-    .checkout-step.active { display: block; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feel Divine - Your Hair Extension Store</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Paystack Inline Script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <style>
+        /* Reset and Base Styles */
+        :root {
+            --primary-color: #d4357a;
+            --primary-hover: #b8295f;
+            --text-color: #333;
+            --background-light: #fff;
+            --background-alt: #f8f8f8;
+            --header-font: 'Playfair Display', serif;
+            --body-font: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-light);
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--background-light);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .nav-logo {
+            font-family: var(--header-font);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            color: var(--primary-hover);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            position: relative; /* For badge positioning */
+            text-decoration: none;
+        }
+
+        .nav-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .profile-icon-container {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 150%;
+            right: 0;
+            background-color: var(--background-light);
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            top: 100%;
+        }
+
+        .profile-dropdown a {
+            color: var(--text-color);
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: var(--background-alt);
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Product Section */
+        .product-section {
+            padding: 4rem 5%;
+            background-color: var(--background-light);
+        }
+        
+        .section-title-link {
+            display: block;
+            text-align: center;
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 3rem;
+            text-decoration: none;
+            position: relative;
+        }
+        .section-title-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+        .section-title-link:hover::after {
+            width: 200px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        #no-results-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: var(--background-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card.hidden {
+            display: none;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #d4357a, #f06292);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .product-card .btn {
+            width: auto;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 53, 122, 0.4);
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: linear-gradient(135deg, #d4357a, #f06292);
+            color: white;
+            text-align: center;
+            padding: 4rem 5%;
+        }
+
+        .newsletter-section h2 {
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-section p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            background: white;
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: auto;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--background-alt);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #222;
+            color: #fff;
+            padding: 3rem 5% 1rem;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-about h3,
+        .footer-links h3,
+        .footer-social h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-family: var(--header-font);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-social a {
+            color: #ccc;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #ccc;
+        }
+
+        /* Search Overlay */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-overlay-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .search-overlay input {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            outline: none;
+        }
+
+        .search-overlay button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-header h3 {
+            color: var(--primary-color);
+            font-family: var(--header-font);
+        }
+
+        .cart-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .empty-cart-message {
+            text-align: center;
+            color: #666;
+            margin-top: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .cart-item-image img {
+            border-radius: 5px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+        .cart-item-details h4 {
+            margin: 0 0 5px;
+            font-size: 1rem;
+        }
+        .cart-item-price {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quantity-btn {
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .remove-item {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .remove-item:hover {
+            color: red;
+        }
+
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .subtotal {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+            -webkit-animation-duration: 0.4s;
+            animation-duration: 0.4s;
+        }
+        @-webkit-keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+        @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: none;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            -webkit-animation-name: slideIn;
+            animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-duration: 0.4s;
+        }
+        
+        #info-modal .modal-content, #checkout-modal .modal-content {
+             max-height: 80vh;
+             overflow-y: auto;
+        }
+        
+        #auth-modal .modal-content {
+            max-width: 400px;
+        }
+        
+        #checkout-modal .modal-content {
+            max-width: 500px;
+        }
+
+
+        @-webkit-keyframes slideIn { from {top: -300px; opacity: 0} to {top: 0; opacity: 1} }
+        @keyframes slideIn { from {margin-top: -5%; opacity: 0} to {margin-top: 5%; opacity: 1} }
+
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-family: var(--header-font);
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            color: var(--text-color);
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .modal-content p, .modal-content li {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .modal-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .modal .close {
+            color: #aaa;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal .close:hover,
+        .modal .close:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #666;
+        }
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(212, 53, 122, 0.1);
+        }
+        
+        /* Auth Form Styles */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .form-switch {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
+        .form-switch a {
+            color: var(--primary-color);
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .form-switch a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+        #my-account-modal p {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* Checkout Modal Styles */
+        .checkout-step { display: none; }
+        .checkout-step.active { display: block; }
+        .order-summary-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .order-summary-total { display: flex; justify-content: space-between; padding: 15px 0; font-weight: bold; font-size: 1.2rem; }
+        #shipping-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+        .paystack-logo { height: 25px; margin-right: 10px; }
+        .pay-button { display: flex; align-items: center; justify-content: center; }
+        .confirmation-icon { font-size: 4rem; color: #4CAF50; text-align: center; margin-bottom: 1rem; }
+        .confirmation-message { text-align: center; }
+        .confirmation-message p { margin-bottom: 5px; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 3%; }
+            .nav-menu { position: fixed; left: -100%; top: 70px; flex-direction: column; background-color: white; width: 100%; text-align: center; transition: left 0.3s ease-in-out; box-shadow: 0 10px 27px rgba(0,0,0,0.05); padding: 2rem 0; gap: 2.5rem; }
+            .nav-menu.active { left: 0; }
+            .nav-item { margin: 1rem 0; }
+            .hamburger { display: flex; }
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+            .product-grid { grid-template-columns: 1fr; }
+            .section-title-link { font-size: 2rem; }
+            .newsletter-section h2 { font-size: 2rem; }
+            .cart-sidebar { width: 90%; max-width: 350px; }
+            .newsletter-form { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Step 1: Shipping Info -->
-  <div id="checkout-step-1" class="checkout-step active">
-    <h2>Shipping Information</h2>
-    <form id="shipping-form">
-      <input type="text" id="shipping-name" placeholder="Full Name" required><br>
-      <input type="email" id="shipping-email" placeholder="Email" required><br>
-      <input type="text" id="shipping-address" placeholder="Address" required><br>
-      <button type="submit">Continue to Payment</button>
-    </form>
-  </div>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="nav-logo">Feel Divine</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#shop" class="nav-link">Shop All</a></li>
+                <li class="nav-item"><a onclick="showInfoModal('contact-us')" class="nav-link">Contact Us</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#" id="search-icon" aria-label="Search for products"><i class="fas fa-search"></i></a>
+                <div class="profile-icon-container">
+                    <a href="#" id="profile-icon" aria-label="User account"><i class="fas fa-user"></i></a>
+                    <div class="profile-dropdown" id="profile-dropdown"></div>
+                </div>
+                <a href="#" id="cart-icon" aria-label="View shopping cart"><i class="fas fa-shopping-bag"></i></a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </nav>
+    </header>
 
-  <!-- Step 2: Payment -->
-  <div id="checkout-step-2" class="checkout-step">
-    <h2>Payment</h2>
-    <p>Total: <span id="payment-amount">₦0.00</span></p>
-    <button id="paystack-button">Pay with Paystack</button>
-  </div>
+    <main>
+        <section id="shop" class="product-section">
+            <a href="#shop" class="section-title-link">Hair Extensions</a>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://placehold.co/300x300/f06292/white?text=Body+Wave+HD" alt="Body Wave HD" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
+                    <h3>Body Wave HD</h3>
+                    <p class="price">₦250.00</p>
+                    <button class="btn">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://placehold.co/300x300/f06292/white?text=Silky+Straight" alt="Silky Straight" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
+                    <h3>Silky Straight</h3>
+                    <p class="price">₦275.00</p>
+                    <button class="btn">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://placehold.co/300x300/f06292/white?text=Deep+Curl" alt="Deep Curl" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
+                    <h3>Deep Curl</h3>
+                    <p class="price">₦260.00</p>
+                    <button class="btn">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://placehold.co/300x300/f06292/white?text=Kinky+Coily" alt="Kinky Coily" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
+                    <h3>Kinky Coily</h3>
+                    <p class="price">₦240.00</p>
+                    <button class="btn">Add to Cart</button>
+                </div>
+            </div>
+            <p id="no-results-message">Sorry, no products found matching your search.</p>
+        </section>
 
-  <!-- Step 3: Confirmation -->
-  <div id="checkout-step-3" class="checkout-step">
-    <h2>Order Confirmation</h2>
-    <p>Thank you! Your payment was successful.</p>
-  </div>
+         <section class="newsletter-section">
+            <h2>Join Our Beauty Club</h2>
+            <p>Get exclusive deals, new product alerts, and beauty tips sent to your inbox.</p>
+            <form class="newsletter-form" action="https://formspree.io/f/mjkelwdv" method="POST">
+                <input type="email" name="email" placeholder="Enter your email" required> 
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </section>
+    </main>
 
-  <!-- Paystack SDK -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+    <footer id="contact-section">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>Feel Divine</h3>
+                <p>Your one-stop shop for all things beauty and glam. We believe every woman deserves to feel confident and beautiful.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a onclick="showInfoModal('about')">About Us</a></li>
+                    <li><a onclick="showInfoModal('shipping')">Shipping & Returns</a></li>
+                    <li><a onclick="showInfoModal('privacy')">Privacy Policy</a></li>
+                    <li><a onclick="showInfoModal('contact-us')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Feel Divine. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-  <script>
-    // Example cart (replace with your own dynamic cart)
-    let cart = [
-      { name: "Luxury Hoodie", price: 15000, quantity: 1 },
-      { name: "Streetwear Cap", price: 5000, quantity: 2 }
-    ];
+    <!-- All Modals -->
+    <div id="search-overlay" class="search-overlay">
+        <span class="close-btn" id="close-search">&times;</span>
+        <div class="search-overlay-content">
+            <input type="search" placeholder="Search for products..." id="search-input">
+            <button aria-label="Submit search" id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Bag</h3>
+            <span class="close-btn" id="close-cart">&times;</span>
+        </div>
+        <div class="cart-body"></div>
+        <div class="cart-footer">
+            <div class="subtotal"><span>Subtotal:</span><span id="cart-subtotal">₦0.00</span></div>
+            <button class="btn checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+    <div id="info-modal" class="modal"><div class="modal-content"><span class="close">&times;</span><div class="modal-body"></div></div></div>
+    <div id="auth-modal" class="modal"><div class="modal-content"><span class="close">&times;</span><div class="modal-body"></div></div></div>
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div id="checkout-step-1" class="checkout-step active">
+                    <h2>Checkout</h2><h3>Order Summary</h3>
+                    <div id="order-summary"></div>
+                    <div class="order-summary-total"><span>Total:</span><span id="checkout-total"></span></div><hr style="margin: 1.5rem 0;">
+                    <h3>Shipping Information</h3>
+                    <form id="shipping-form">
+                        <div class="form-group"><label for="shipping-email">Email</label><input type="email" id="shipping-email" required></div>
+                        <div class="form-group"><label for="shipping-name">Full Name</label><input type="text" id="shipping-name" required></div>
+                        <div class="form-group"><label for="shipping-address">Address</label><input type="text" id="shipping-address" required></div>
+                        <div class="form-group"><label for="shipping-city">City</label><input type="text" id="shipping-city" required></div>
+                        <button type="submit" class="btn">Proceed to Payment</button>
+                    </form>
+                </div>
+                <div id="checkout-step-2" class="checkout-step">
+                    <h2>Payment</h2>
+                    <p>Click the button below to complete your payment securely with Paystack.</p>
+                    <button id="paystack-button" class="btn pay-button">
+                        <img src="https://assets.paystack.com/assets/img/logos/merchants/header-logo.svg" alt="Paystack" class="paystack-logo">
+                        Pay <span id="payment-amount"></span>
+                    </button>
+                </div>
+                <div id="checkout-step-3" class="checkout-step">
+                    <div class="confirmation-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="confirmation-message">
+                        <h2>Payment Successful!</h2>
+                        <p>Thank you for your purchase.</p>
+                        <p>Your order confirmation has been sent to your email.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Step 1 → Step 2
-    document.getElementById("shipping-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      document.getElementById("checkout-step-1").classList.remove("active");
-      document.getElementById("checkout-step-2").classList.add("active");
+<script>
+    let cart = JSON.parse(localStorage.getItem('feelDivineCart')) || [];
 
-      // Calculate total in naira
-      const totalAmountNaira = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      document.getElementById("payment-amount").innerText = "₦" + totalAmountNaira.toLocaleString();
-    });
+    function showInfoModal(type, data = {}) { /* ... full function from previous step ... */ }
 
-    // Paystack Payment
-    document.getElementById("paystack-button").addEventListener("click", function() {
-      const email = document.getElementById("shipping-email").value;
-      const totalAmountNaira = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // Paste the full showInfoModal function from the previous response here
+    function showInfoModal(type, data = {}) {
+        const modal = document.getElementById('info-modal');
+        const modalBody = modal.querySelector('.modal-body');
+        let title = '';
+        let content = '';
 
-      let handler = PaystackPop.setup({
-        key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139', // your live public key
-        email: email,
-        amount: totalAmountNaira * 100, // convert naira → kobo
-        currency: 'NGN',
-        ref: '' + Math.floor((Math.random() * 1000000000) + 1), // unique reference
-        callback: function(response) {
-          console.log("Payment successful. Reference: " + response.reference);
-
-          // ✅ Move to confirmation step
-          document.getElementById("checkout-step-2").classList.remove("active");
-          document.getElementById("checkout-step-3").classList.add("active");
-
-          // ✅ Clear cart after success
-          cart = [];
-          localStorage.removeItem("feelDivineCart");
-        },
-        onClose: function() {
-          alert('Payment window closed.');
+        switch (type) {
+            case 'about':
+                title = 'About Feel Divine';
+                content = `
+                    <p>Welcome to Feel Divine, your ultimate destination for high-quality hair extensions. Founded in 2025, our mission is to empower women by providing products that inspire confidence and celebrate beauty in all its forms.</p>
+                    <p>From luxurious virgin hair to premium synthetic blends, every item in our collection is carefully selected to ensure it meets our high standards of quality and style. We believe that feeling divine is a right, not a luxury.</p>
+                    <p>Thank you for joining our community. We are excited to be a part of your beauty journey.</p>
+                `;
+                break;
+            case 'shipping':
+                title = 'Shipping & Returns Policy';
+                content = `
+                    <h3>Shipping Information</h3>
+                    <p>We are pleased to offer shipping across the country. Please allow the following timeframes:</p>
+                    <ul>
+                        <li><strong>Standard Shipping:</strong> 5-7 business days.</li>
+                        <li><strong>Express Shipping:</strong> 2-3 business days.</li>
+                    </ul>
+                    <p>Orders are typically processed and dispatched within 24 hours of being placed. You will receive a confirmation email with tracking information once your order is on its way.</p>
+                    <h3>Returns & Exchanges</h3>
+                    <p>Your satisfaction is our priority. If you're not completely in love with your purchase, you may return it within 14 days of receipt for a full refund or exchange, provided the items are unused, in their original packaging, and in the same condition that you received them.</p>
+                    <p>To initiate a return, please contact our support team at <strong>feeldivine@icloud.com</strong> with your order number and the reason for the return.</p>
+                `;
+                break;
+            case 'privacy':
+                title = 'Privacy Policy';
+                content = `
+                    <p>Feel Divine is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Feel Divine.</p>
+                    <h3>Information We Collect</h3>
+                    <p>We collect information you provide directly to us, such as when you create an account, place an order, or subscribe to our newsletter. This may include your name, email address, shipping address, and payment information.</p>
+                    <h3>How We Use Your Information</h3>
+                    <p>We use the information we collect to:</p>
+                    <ul>
+                        <li>Process and fulfill your orders.</li>
+                        <li>Communicate with you about your orders and provide customer support.</li>
+                        <li>Send you promotional materials and updates, if you opt-in.</li>
+                        <li>Improve and personalize your shopping experience.</li>
+                    </ul>
+                    <p>We do not sell or share your personal information with third parties except as necessary to provide our services (e.g., to shipping carriers). For any questions about our privacy practices, please contact us at <strong>feeldivine@icloud.com</strong>.</p>
+                `;
+                break;
+            case 'contact-us':
+                title = 'Contact Us';
+                content = `<p style="text-align: center; font-size: 1.1rem;">For any questions, support, or inquiries, please send an email to:</p>
+                           <p style="text-align: center; font-size: 1.2rem; font-weight: bold; margin-bottom: 2rem;">feeldivine@icloud.com</p>`;
+                break;
+            case 'custom-alert':
+                title = data.title || 'Alert';
+                content = `<p style="text-align:center;">${data.message}</p>`;
+                break;
+            case 'suggestion':
+                title = 'Did you mean...?';
+                content = `
+                    <p style="text-align:center;">We couldn't find anything for "<strong>${data.originalQuery}</strong>".</p>
+                    <p style="text-align:center;">Did you mean <strong>${data.suggestion}</strong>?</p>
+                    <div style="text-align:center; margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem;">
+                        <button class="btn" id="suggestion-yes" style="width: auto;">Yes</button>
+                        <button class="btn" id="suggestion-no" style="width: auto; background: #6c757d;">No</button>
+                    </div>
+                `;
+                break;
         }
-      });
+        modalBody.innerHTML = `<h2>${title}</h2>${content}`;
+        modal.style.display = 'block';
+        
+        if (type === 'suggestion') {
+            document.getElementById('suggestion-yes').onclick = () => {
+                const event = new CustomEvent('perform-search-suggestion', { detail: { suggestion: data.suggestion } });
+                document.dispatchEvent(event);
+                modal.style.display = 'none';
+            };
+            document.getElementById('suggestion-no').onclick = () => {
+                modal.style.display = 'none';
+                document.getElementById('no-results-message').style.display = 'block';
+            };
+        }
+    }
 
-      handler.openIframe();
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentUser = JSON.parse(localStorage.getItem('feelDivineUser')) || null;
+        const allElements = {
+            hamburger: document.querySelector('.hamburger'),
+            navMenu: document.querySelector('.nav-menu'),
+            searchIcon: document.getElementById('search-icon'),
+            searchOverlay: document.getElementById('search-overlay'),
+            closeSearch: document.getElementById('close-search'),
+            searchInput: document.getElementById('search-input'),
+            searchButton: document.getElementById('search-button'),
+            cartIcon: document.getElementById('cart-icon'),
+            cartSidebar: document.getElementById('cart-sidebar'),
+            closeCart: document.getElementById('close-cart'),
+            profileIcon: document.getElementById('profile-icon'),
+            profileDropdown: document.getElementById('profile-dropdown'),
+            addToCartButtons: document.querySelectorAll('.product-card .btn'),
+            navLinks: document.querySelectorAll('a.nav-link'),
+            newsletterForm: document.querySelector('.newsletter-form'),
+            checkoutBtn: document.querySelector('.checkout-btn')
+        };
+        
+        function saveCartToStorage() { localStorage.setItem('feelDivineCart', JSON.stringify(cart)); }
+        
+        function updateProfileDropdown() {
+             const { profileDropdown } = allElements;
+             profileDropdown.innerHTML = '';
+             if (currentUser) {
+                 const myAccountLink = document.createElement('a');
+                 myAccountLink.textContent = 'My Account';
+                 myAccountLink.onclick = () => showAuthModal('my-account');
+                 const logoutLink = document.createElement('a');
+                 logoutLink.textContent = 'Logout';
+                 logoutLink.onclick = handleLogout;
+                 profileDropdown.appendChild(myAccountLink);
+                 profileDropdown.appendChild(logoutLink);
+             } else {
+                 const loginLink = document.createElement('a');
+                 loginLink.textContent = 'Login';
+                 loginLink.onclick = () => showAuthModal('login');
+                 const registerLink = document.createElement('a');
+                 registerLink.textContent = 'Register';
+                 registerLink.onclick = () => showAuthModal('register');
+                 profileDropdown.appendChild(loginLink);
+                 profileDropdown.appendChild(registerLink);
+             }
+        }
+        
+        function performSearch(finalSearch = false) { /* ... same logic ... */ }
+        function addToCart(product) { /* ... same logic ... */ }
+        window.updateQuantity = function(productId, change) { /* ... same logic ... */ }
+        window.removeFromCart = function(productId) { /* ... same logic ... */ }
+        
+        function updateCartDisplay() {
+            const cartBody = document.querySelector('.cart-body');
+            if (!cartBody) return;
+            cartBody.innerHTML = cart.length === 0 
+                ? '<p class="empty-cart-message">Your bag is currently empty.</p>' 
+                : cart.map(item => `
+                    <div class="cart-item" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.name}" width="50" style="border-radius:5px;">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">${item.price}</p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+                    </div>`).join('');
+            updateSubtotal();
+            updateCartIcon();
+            saveCartToStorage();
+        }
+
+        function getSubtotal(cartArray = cart) { return cartArray.reduce((sum, item) => sum + (parseFloat(item.price.replace('₦', '')) * item.quantity), 0); }
+        function updateSubtotal() { allElements.cartSidebar.querySelector('#cart-subtotal').textContent = `₦${getSubtotal().toFixed(2)}`; }
+        function updateCartIcon() { /* ... same logic ... */ }
+        function showAddToCartFeedback(button) { /* ... same logic ... */ }
+
+        // Event listeners...
+        allElements.addToCartButtons.forEach((button, index) => {
+             button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const productCard = button.closest('.product-card');
+                const product = { id: Date.now() + index, name: productCard.querySelector('h3').textContent, price: productCard.querySelector('.price').textContent, image: productCard.querySelector('img').src, quantity: 1 };
+                addToCart(product);
+                showAddToCartFeedback(button);
+            });
+        });
+        
+        document.addEventListener('cart-cleared', () => {
+            cart = [];
+            updateCartDisplay();
+        });
+
+        updateCartDisplay();
+        updateProfileDropdown();
     });
-  </script>
+
+    function handlePayment(email, amount) {
+        const handler = PaystackPop.setup({
+            key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139',
+            email: email,
+            amount: amount * 100, // Amount in Kobo
+            currency: 'NGN',
+            ref: 'feeldivine-' + Math.floor((Math.random() * 1000000000) + 1),
+            callback: function(response) {
+                document.getElementById('checkout-step-2').classList.remove('active');
+                document.getElementById('checkout-step-3').classList.add('active');
+                const clearCartEvent = new CustomEvent('cart-cleared');
+                document.dispatchEvent(clearCartEvent);
+                setTimeout(() => {
+                    document.getElementById('checkout-modal').style.display = 'none';
+                }, 4000);
+            },
+            onClose: function() {
+                alert('Transaction was not completed, window closed.');
+            },
+        });
+        handler.openIframe();
+    }
+
+    document.getElementById('shipping-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('checkout-step-1').classList.remove('active');
+        document.getElementById('checkout-step-2').classList.add('active');
+        const email = document.getElementById('shipping-email').value;
+        const amount = getSubtotalForCheckout();
+        document.getElementById('payment-amount').textContent = `₦${amount.toFixed(2)}`;
+        document.getElementById('paystack-button').onclick = () => handlePayment(email, amount);
+    });
+    
+    // Remaining global functions (showAuthModal, handleLogin, etc.) and event listeners for modals
+    // Paste the full logic for these functions from the previous correct response here
+    
+</script>
 </body>
 </html>
+
