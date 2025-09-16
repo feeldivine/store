@@ -1218,21 +1218,30 @@
         // === Paystack Payment Integration ===
         checkoutBtn.addEventListener('click', () => {
             if (cart.length > 0) {
+                // You would typically get the user's email from a form field.
+                // For this example, we'll use a placeholder.
+                const userEmail = 'customer@email.com'; // Replace with a real user email from your login system
+
+                if (!userEmail) {
+                    alert('Please log in or provide your email to check out.');
+                    return;
+                }
+
                 const handler = PaystackPop.setup({
                     key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139', // Your Paystack Public Key
-                    email: 'customer@email.com', // Replace with customer email
+                    email: userEmail,
                     amount: total * 100, // Amount in kobo
                     currency: 'NGN',
                     channels: ['card', 'bank', 'ussd'],
-                    callback: function(response){
-                        // Reference is a unique transaction reference
+                    callback: function(response) {
+                        // This block is executed on a successful payment
                         const reference = response.reference;
                         alert('Payment successful! Your transaction reference is: ' + reference);
-                        // Clear cart after successful payment
                         cart = [];
                         renderCart();
                     },
-                    onClose: function(){
+                    onClose: function() {
+                        // This block is executed if the user closes the payment modal
                         alert('Transaction was not completed, window closed.');
                     }
                 });
