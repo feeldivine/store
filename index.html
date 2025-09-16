@@ -802,11 +802,18 @@
                 <li class="nav-item"><a onclick="showInfoModal('contact-us')" class="nav-link">Contact Us</a></li>
             </ul>
             <div class="nav-icons">
-                <a href="#" id="search-icon" aria-label="Search for products"><i class="fas fa-search"></i></a>
-                <div class="profile-icon-container">
-                    <a href="#" id="profile-icon" aria-label="User account"><i class="fas fa-user"></i></a>
-                    <div class="profile-dropdown" id="profile-dropdown"></div>
-                </div>
+    <a href="#" id="search-icon"><i class="fas fa-search"></i></a>
+    <a href="#" id="profile-icon"><i class="fas fa-user"></i></a>
+    <a href="#" id="cart-icon" class="cart-icon-container">
+        <i class="fas fa-shopping-bag"></i>
+        <span id="cart-count" class="cart-badge">0</span>
+    </a>
+    <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+</div>
                 <a href="#" class="nav-icon" id="cart-icon">
     <i class="fas fa-shopping-bag"></i>
     <span id="cart-count">0</span>
@@ -991,7 +998,7 @@ function showInfoModal(type, data = {}) {
             content = `
                 <p>Welcome to Feel Divine, your ultimate destination for high-quality hair extensions. Founded in 2025, our mission is to empower women by providing products that inspire confidence and celebrate beauty in all its forms.</p>
                 <p>From luxurious virgin hair to premium synthetic blends, every item in our collection is carefully selected to ensure it meets our high standards of quality and style. We believe that feeling divine is a right, not a luxury.</p>
-                <p>Thank you for joining our community. We are excited to be a part of your beauty journey.</p>
+                <p>Thank to you for joining our community. We are excited to be a part of your beauty journey.</p>
             `;
             break;
         case 'shipping':
@@ -1063,6 +1070,8 @@ function setupModalClose(modalId, closeBtnClass) {
 }
 setupModalClose('info-modal', 'close');
 setupModalClose('auth-modal', 'close');
+setupModalClose('checkout-modal', 'close');
+
 
 // Cart functionality
 function updateCartTotal() {
@@ -1163,7 +1172,16 @@ document.getElementById('close-search').addEventListener('click', () => {
     document.getElementById('search-overlay').style.display = 'none';
 });
 
-// Auth Modal functionality
+// **NEW:** Hamburger Menu Functionality
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+});
+
+// **FIXED:** Auth Modal functionality
 document.getElementById('profile-icon').addEventListener('click', () => {
     document.getElementById('auth-modal').style.display = 'block';
 });
