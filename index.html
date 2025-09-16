@@ -789,12 +789,15 @@
             width: 100%; 
             height: 100%;
             flex-direction: column; 
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             background-color: white; 
             transition: left 0.3s ease-in-out; 
             box-shadow: 0 10px 27px rgba(0,0,0,0.05); 
             z-index: 999;
+            padding-top: 5rem;
+            padding-left: 2rem;
+            gap: 1rem;
         }
         .nav-menu.active { 
             left: 0; 
@@ -806,6 +809,16 @@
             font-size: 1.5rem;
             color: #333;
         }
+        .nav-menu li a.hair-extensions-link {
+            font-weight: 500;
+        }
+        .nav-menu a {
+            font-weight: 500;
+        }
+        .nav-menu .nav-item-account a {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
 
         .nav-icons {
             font-size: 1.5rem;
@@ -813,7 +826,7 @@
         }
 
         .nav-icons .hamburger {
-            display: block;
+            display: flex;
             z-index: 1001;
             font-size: 1.5rem;
         }
@@ -834,6 +847,25 @@
         .newsletter-form { 
             flex-direction: column; 
         }
+        .mobile-search {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: none;
+        }
+        .nav-menu.active .mobile-search {
+            display: block;
+        }
+        .nav-menu .nav-item-account,
+        .nav-menu .nav-item-info {
+            display: none;
+        }
+        .nav-menu.active .nav-item-account,
+        .nav-menu.active .nav-item-info {
+            display: block;
+        }
     }
     </style>
 </head>
@@ -843,9 +875,10 @@
             <a href="#" class="logo">Feel Divine</a>
 
             <ul class="nav-menu">
+                <div class="mobile-menu-header">
+                    <input type="text" placeholder="Search..." class="mobile-search">
+                </div>
                 <li class="nav-item"><a href="#hair-extensions" class="nav-link hair-extensions-link">Hair Extensions</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Wig Making</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Accessories</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Shop All</a></li>
             </ul>
 
@@ -1007,6 +1040,7 @@
 
         const profileIcon = document.getElementById('profile-icon');
         const profileDropdown = document.getElementById('profile-dropdown');
+        const mobileAccountLink = document.getElementById('mobile-account-link');
 
         const cartIcon = document.getElementById('cart-icon');
         const cartSidebar = document.getElementById('cart-sidebar');
@@ -1034,17 +1068,6 @@
         let cart = [];
         let total = 0;
 
-        // === Function to Toggle Elements ===
-        function toggleElement(element, show = true) {
-            if (show) {
-                element.style.display = 'flex';
-                setTimeout(() => element.classList.add('active'), 10);
-            } else {
-                element.classList.remove('active');
-                setTimeout(() => element.style.display = 'none', 300);
-            }
-        }
-
         // === Event Listeners for Header Icons ===
         searchIcon.addEventListener('click', (event) => {
             event.preventDefault();
@@ -1059,9 +1082,13 @@
             event.preventDefault();
             profileDropdown.classList.toggle('show');
         });
+
         document.addEventListener('click', (event) => {
             if (!profileIcon.contains(event.target) && !profileDropdown.contains(event.target)) {
                 profileDropdown.classList.remove('show');
+            }
+            if (!cartSidebar.contains(event.target) && !cartIcon.contains(event.target) && cartSidebar.classList.contains('active')) {
+                cartSidebar.classList.remove('active');
             }
         });
 
@@ -1072,16 +1099,14 @@
         closeCartBtn.addEventListener('click', () => {
             cartSidebar.classList.remove('active');
         });
-        document.addEventListener('click', (event) => {
-            if (!cartSidebar.contains(event.target) && !cartIcon.contains(event.target) && cartSidebar.classList.contains('active')) {
-                cartSidebar.classList.remove('active');
-            }
-        });
 
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
+
+        // === Mobile Account Link to Auth Modal ===
+        // This is no longer necessary as the mobile account link was removed from the HTML.
 
         // === Product Search Functionality ===
         searchInput.addEventListener('input', () => {
@@ -1218,8 +1243,6 @@
         // === Paystack Payment Integration ===
         checkoutBtn.addEventListener('click', () => {
             if (cart.length > 0) {
-                // You would typically get the user's email from a form field.
-                // For this example, we'll use a placeholder.
                 const userEmail = 'customer@email.com'; // Replace with a real user email from your login system
 
                 if (!userEmail) {
@@ -1234,14 +1257,12 @@
                     currency: 'NGN',
                     channels: ['card', 'bank', 'ussd'],
                     callback: function(response) {
-                        // This block is executed on a successful payment
                         const reference = response.reference;
                         alert('Payment successful! Your transaction reference is: ' + reference);
                         cart = [];
                         renderCart();
                     },
                     onClose: function() {
-                        // This block is executed if the user closes the payment modal
                         alert('Transaction was not completed, window closed.');
                     }
                 });
