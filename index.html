@@ -75,6 +75,11 @@
         color: var(--primary-color);
     }
     
+    /* NEW: Makes the "Hair Extensions" link bold */
+    .hair-extensions-link {
+        font-weight: bold;
+    }
+    
     .nav-link::after {
         content: '';
         position: absolute;
@@ -838,7 +843,7 @@
             <a href="#" class="logo">Feel Divine</a>
 
             <ul class="nav-menu">
-                <li class="nav-item"><a href="#hair-extensions" class="nav-link">Hair Extensions</a></li>
+                <li class="nav-item"><a href="#hair-extensions" class="nav-link hair-extensions-link">Hair Extensions</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Wig Making</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Accessories</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Shop All</a></li>
@@ -875,13 +880,13 @@
                 <div class="product-card" data-name="Body Wave" data-price="250" data-image="path/to/your/image1.jpg">
                     <img src="path/to/your/image1.jpg" alt="Body Wave">
                     <h3>Body Wave</h3>
-                    <p class="price">$250.00</p>
+                    <p class="price">₦250.00</p>
                     <button class="btn add-to-cart">Add to Bag</button>
                 </div>
                 <div class="product-card" data-name="Deep Wave" data-price="280" data-image="path/to/your/image2.jpg">
                     <img src="path/to/your/image2.jpg" alt="Deep Wave">
                     <h3>Deep Wave</h3>
-                    <p class="price">$280.00</p>
+                    <p class="price">₦280.00</p>
                     <button class="btn add-to-cart">Add to Bag</button>
                 </div>
                 </div>
@@ -920,7 +925,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Feel Divine. All rights reserved.</p>
+            <p>&copy; 2024 Feel Divine. All rights reserved.</p>
         </div>
     </footer>
 
@@ -943,7 +948,7 @@
         <div class="cart-footer">
             <div class="subtotal">
                 <span>Subtotal:</span>
-                <span id="subtotal-amount">$0.00</span>
+                <span id="subtotal-amount">₦0.00</span>
             </div>
             <button class="btn checkout-btn" id="checkout-btn">Checkout to Payment</button>
         </div>
@@ -1141,7 +1146,7 @@
                         </div>
                         <div class="cart-item-details">
                             <h4>${item.name}</h4>
-                            <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <p class="cart-item-price">₦${(item.price * item.quantity).toFixed(2)}</p>
                             <div class="quantity-controls">
                                 <button class="quantity-btn decrease-qty" data-name="${item.name}">-</button>
                                 <span>${item.quantity}</span>
@@ -1155,7 +1160,7 @@
                 });
             }
 
-            subtotalAmount.textContent = `$${total.toFixed(2)}`;
+            subtotalAmount.textContent = `₦${total.toFixed(2)}`;
             cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
         }
 
@@ -1237,7 +1242,7 @@
             }
         });
     });
-    </script>
+</script>
 
 </body>
 </html>
