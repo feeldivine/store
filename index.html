@@ -1062,7 +1062,8 @@
     }
 
     document.querySelectorAll('.product-card .btn').forEach((button, index) => {
-        button.addEventListener('click', () => {
+    alert("Found a button!"); // <-- Add this line
+    button.addEventListener('click', () => {
             addToCart(products[index]);
         });
     });
