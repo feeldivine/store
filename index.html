@@ -14,756 +14,783 @@
     <!-- Paystack Inline Script -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
     
-    <style>
-        /* Reset and Base Styles */
-        :root {
-            --primary-color: #d4357a;
-            --primary-hover: #b8295f;
-            --text-color: #333;
-            --background-light: #fff;
-            --background-alt: #f8f8f8;
-            --header-font: 'Playfair Display', serif;
-            --body-font: 'Poppins', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--body-font);
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-light);
-        }
-
-        /* Navigation Styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            background-color: var(--background-light);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
-
-        .nav-logo {
-            font-family: var(--header-font);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-logo:hover {
-            color: var(--primary-hover);
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .nav-icons a {
-            color: var(--text-color);
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
-            position: relative; /* For badge positioning */
-            text-decoration: none;
-        }
-
-        .nav-icons a:hover {
-            color: var(--primary-color);
-        }
-
-        .profile-icon-container {
-            position: relative;
-        }
-
-        .profile-dropdown {
-            position: absolute;
-            top: 150%;
-            right: 0;
-            background-color: var(--background-light);
-            min-width: 150px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            z-index: 1;
-            border-radius: 8px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .profile-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-            top: 100%;
-        }
-
-        .profile-dropdown a {
-            color: var(--text-color);
-            padding: 10px 15px;
-            text-decoration: none;
-            display: block;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .profile-dropdown a:hover {
-            background-color: var(--background-alt);
-            color: var(--primary-color);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .bar {
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-color);
-            margin: 3px 0;
-            transition: 0.3s;
-        }
-
-        /* Product Section */
-        .product-section {
-            padding: 4rem 5%;
-            background-color: var(--background-light);
-        }
-        
-        .section-title-link {
-            display: block;
-            text-align: center;
-            font-family: var(--header-font);
-            font-size: 2.5rem;
-            color: var(--text-color);
-            margin-bottom: 3rem;
-            text-decoration: none;
-            position: relative;
-        }
-        .section-title-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            background-color: var(--primary-color);
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: width 0.3s ease;
-        }
-        .section-title-link:hover::after {
-            width: 200px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        
-        #no-results-message {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #666;
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: var(--background-light);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-card.hidden {
-            display: none;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .product-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-        }
-
-        .price {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #d4357a, #f06292);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .product-card .btn {
-            width: auto;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 53, 122, 0.4);
-        }
-
-        /* Newsletter Section */
-        .newsletter-section {
-            background: linear-gradient(135deg, #d4357a, #f06292);
-            color: white;
-            text-align: center;
-            padding: 4rem 5%;
-        }
-
-        .newsletter-section h2 {
-            font-family: var(--header-font);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .newsletter-section p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .newsletter-form {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter-form input {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .newsletter-form button {
-            background: white;
-            color: var(--primary-color);
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: auto;
-        }
-
-        .newsletter-form button:hover {
-            background: var(--background-alt);
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            background: #222;
-            color: #fff;
-            padding: 3rem 5% 1rem;
-        }
-
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-about h3,
-        .footer-links h3,
-        .footer-social h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-family: var(--header-font);
-        }
-
-        .footer-links ul {
-            list-style: none;
-        }
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .footer-social a {
-            color: #ccc;
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-social a:hover {
-            color: var(--primary-color);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #444;
-            color: #ccc;
-        }
-
-        /* Search Overlay */
-        .search-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .search-overlay-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            max-width: 600px;
-            width: 90%;
-        }
-
-        .search-overlay input {
-            flex: 1;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.2rem;
-            outline: none;
-        }
-
-        .search-overlay button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            width: auto;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: var(--primary-color);
-        }
-
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100%;
-            background: white;
-            z-index: 1000;
-            transition: right 0.3s ease;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-header h3 {
-            color: var(--primary-color);
-            font-family: var(--header-font);
-        }
-
-        .cart-body {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-        .empty-cart-message {
-            text-align: center;
-            color: #666;
-            margin-top: 2rem;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
-
-        .cart-item-image img {
-            border-radius: 5px;
-        }
-
-        .cart-item-details {
-            flex: 1;
-        }
-        .cart-item-details h4 {
-            margin: 0 0 5px;
-            font-size: 1rem;
-        }
-        .cart-item-price {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .quantity-btn {
-            border: 1px solid #ccc;
-            background: #f8f8f8;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-        .remove-item {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #aaa;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .remove-item:hover {
-            color: red;
-        }
-
-        .cart-footer {
-            padding: 1rem;
-            border-top: 1px solid #eee;
-        }
-
-        .subtotal {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-            -webkit-animation-name: fadeIn;
-            animation-name: fadeIn;
-            -webkit-animation-duration: 0.4s;
-            animation-duration: 0.4s;
-        }
-        @-webkit-keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
-        @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
-
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 30px;
-            border: none;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 700px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            -webkit-animation-name: slideIn;
-            animation-name: slideIn;
-            -webkit-animation-duration: 0.4s;
-            animation-duration: 0.4s;
-        }
-        
-        #info-modal .modal-content, #checkout-modal .modal-content {
-             max-height: 80vh;
-             overflow-y: auto;
-        }
-        
-        #auth-modal .modal-content {
-            max-width: 400px;
-        }
-        
-        #checkout-modal .modal-content {
-            max-width: 500px;
-        }
-
-
-        @-webkit-keyframes slideIn { from {top: -300px; opacity: 0} to {top: 0; opacity: 1} }
-        @keyframes slideIn { from {margin-top: -5%; opacity: 0} to {margin-top: 5%; opacity: 1} }
-
-        .modal-content h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-family: var(--header-font);
-            text-align: center;
-        }
-
-        .modal-content h3 {
-            color: var(--text-color);
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
-
-        .modal-content p, .modal-content li {
-            line-height: 1.7;
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .modal-content ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .modal .close {
-            color: #aaa;
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 32px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .modal .close:hover,
-        .modal .close:focus {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group label {
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #666;
-        }
-        .form-group input {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .form-group input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(212, 53, 122, 0.1);
-        }
-        
-        /* Auth Form Styles */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .form-switch {
-            text-align: center;
-            margin-top: 1rem;
-            color: #666;
-        }
-        .form-switch a {
-            color: var(--primary-color);
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .form-switch a:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: red;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-top: 1rem;
-            display: none;
-        }
-        #my-account-modal p {
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        
-        /* Checkout Modal Styles */
-        .checkout-step { display: none; }
-        .checkout-step.active { display: block; }
-        .order-summary-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .order-summary-total { display: flex; justify-content: space-between; padding: 15px 0; font-weight: bold; font-size: 1.2rem; }
-        #shipping-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
-        .paystack-logo { height: 25px; margin-right: 10px; }
-        .pay-button { display: flex; align-items: center; justify-content: center; }
-        .confirmation-icon { font-size: 4rem; color: #4CAF50; text-align: center; margin-bottom: 1rem; }
-        .confirmation-message { text-align: center; }
-        .confirmation-message p { margin-bottom: 5px; }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .navbar { padding: 1rem 3%; }
-            .nav-menu { position: fixed; left: -100%; top: 70px; flex-direction: column; background-color: white; width: 100%; text-align: center; transition: left 0.3s ease-in-out; box-shadow: 0 10px 27px rgba(0,0,0,0.05); padding: 2rem 0; gap: 2.5rem; }
-            .nav-menu.active { left: 0; }
-            .nav-item { margin: 1rem 0; }
-            .hamburger { display: flex; }
-            .hamburger.active .bar:nth-child(2) { opacity: 0; }
-            .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-            .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-            .product-grid { grid-template-columns: 1fr; }
-            .section-title-link { font-size: 2rem; }
-            .newsletter-section h2 { font-size: 2rem; }
-            .cart-sidebar { width: 90%; max-width: 350px; }
-            .newsletter-form { flex-direction: column; }
-        }
-    </style>
+<style>
+    /* Reset and Base Styles */
+    :root {
+        --primary-color: #d4357a;
+        --primary-hover: #b8295f;
+        --text-color: #333;
+        --background-light: #fff;
+        --background-alt: #f8f8f8;
+        --header-font: 'Playfair Display', serif;
+        --body-font: 'Poppins', sans-serif;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--body-font);
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-light);
+    }
+
+    /* Navigation Styles */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        background-color: var(--background-light);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+
+    .nav-logo {
+        font-family: var(--header-font);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+        color: var(--primary-hover);
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-link:hover {
+        color: var(--primary-color);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .nav-icons {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .nav-icons a {
+        color: var(--text-color);
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+        position: relative; /* For badge positioning */
+        text-decoration: none;
+    }
+
+    .nav-icons a:hover {
+        color: var(--primary-color);
+    }
+
+    .profile-icon-container {
+        position: relative;
+    }
+
+    .profile-dropdown {
+        position: absolute;
+        top: 150%;
+        right: 0;
+        background-color: var(--background-light);
+        min-width: 150px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        z-index: 1;
+        border-radius: 8px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .profile-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        top: 100%;
+    }
+
+    .profile-dropdown a {
+        color: var(--text-color);
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .profile-dropdown a:hover {
+        background-color: var(--background-alt);
+        color: var(--primary-color);
+    }
+
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--text-color);
+        margin: 3px 0;
+        transition: 0.3s;
+    }
+
+    /* Product Section */
+    .product-section {
+        padding: 4rem 5%;
+        background-color: var(--background-light);
+    }
+    
+    .section-title-link {
+        display: block;
+        text-align: center;
+        font-family: var(--header-font);
+        font-size: 2.5rem;
+        color: var(--text-color);
+        margin-bottom: 3rem;
+        text-decoration: none;
+        position: relative;
+    }
+    .section-title-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 3px;
+        background-color: var(--primary-color);
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+    .section-title-link:hover::after {
+        width: 200px;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    #no-results-message {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        display: none;
+        margin-top: 2rem;
+    }
+
+    .product-card {
+        background: var(--background-light);
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .product-card.hidden {
+        display: none;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .product-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
+
+    .price {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        background: linear-gradient(135deg, #d4357a, #f06292);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .product-card .btn {
+        width: auto;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(212, 53, 122, 0.4);
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+        background: linear-gradient(135deg, #d4357a, #f06292);
+        color: white;
+        text-align: center;
+        padding: 4rem 5%;
+    }
+
+    .newsletter-section h2 {
+        font-family: var(--header-font);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .newsletter-section p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .newsletter-form {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .newsletter-form input {
+        flex: 1;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1rem;
+        outline: none;
+    }
+
+    .newsletter-form button {
+        background: white;
+        color: var(--primary-color);
+        padding: 12px 25px;
+        border: none;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: auto;
+    }
+
+    .newsletter-form button:hover {
+        background: var(--background-alt);
+        transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+        background: #222;
+        color: #fff;
+        padding: 3rem 5% 1rem;
+    }
+
+    .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-about h3,
+    .footer-links h3,
+    .footer-social h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-family: var(--header-font);
+    }
+
+    .footer-links ul {
+        list-style: none;
+    }
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .footer-links a:hover {
+        color: var(--primary-color);
+    }
+
+    .footer-social a {
+        color: #ccc;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .footer-social a:hover {
+        color: var(--primary-color);
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid #444;
+        color: #ccc;
+    }
+
+    /* Search Overlay */
+    .search-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-overlay-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 600px;
+        width: 90%;
+    }
+
+    .search-overlay input {
+        flex: 1;
+        padding: 15px 25px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        outline: none;
+    }
+
+    .search-overlay button {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        width: auto;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        color: white;
+        font-size: 40px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+        color: var(--primary-color);
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        width: 400px;
+        height: 100%;
+        background: white;
+        z-index: 1000;
+        transition: right 0.3s ease;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cart-sidebar.active {
+        right: 0;
+    }
+
+    .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-header h3 {
+        color: var(--primary-color);
+        font-family: var(--header-font);
+    }
+
+    .cart-body {
+        flex: 1;
+        padding: 1rem;
+        overflow-y: auto;
+    }
+    .empty-cart-message {
+        text-align: center;
+        color: #666;
+        margin-top: 2rem;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1rem;
+    }
+
+    .cart-item-image img {
+        border-radius: 5px;
+    }
+
+    .cart-item-details {
+        flex: 1;
+    }
+    .cart-item-details h4 {
+        margin: 0 0 5px;
+        font-size: 1rem;
+    }
+    .cart-item-price {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .quantity-btn {
+        border: 1px solid #ccc;
+        background: #f8f8f8;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+    .remove-item {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #aaa;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    .remove-item:hover {
+        color: red;
+    }
+
+    .cart-footer {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .subtotal {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+        -webkit-animation-name: fadeIn;
+        animation-name: fadeIn;
+        -webkit-animation-duration: 0.4s;
+        animation-duration: 0.4s;
+    }
+    @-webkit-keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+    @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 30px;
+        border: none;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 700px;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        -webkit-animation-name: slideIn;
+        animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-duration: 0.4s;
+    }
+    
+    #info-modal .modal-content, #checkout-modal .modal-content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    #auth-modal .modal-content {
+        max-width: 400px;
+    }
+    
+    #checkout-modal .modal-content {
+        max-width: 500px;
+    }
+
+
+    @-webkit-keyframes slideIn { from {top: -300px; opacity: 0} to {top: 0; opacity: 1} }
+    @keyframes slideIn { from {margin-top: -5%; opacity: 0} to {margin-top: 5%; opacity: 1} }
+
+    .modal-content h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-family: var(--header-font);
+        text-align: center;
+    }
+
+    .modal-content h3 {
+        color: var(--text-color);
+        margin-top: 25px;
+        margin-bottom: 10px;
+    }
+
+    .modal-content p, .modal-content li {
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    .modal-content ul {
+        margin-left: 20px;
+        margin-bottom: 15px;
+    }
+
+    .modal .close {
+        color: #aaa;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .modal .close:hover,
+    .modal .close:focus {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    /* Form Styles */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #666;
+    }
+    .form-group input {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-group input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(212, 53, 122, 0.1);
+    }
+    
+    /* Auth Form Styles */
+    .auth-forms {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+    }
+
+    .auth-form {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .auth-form.active {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .auth-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    
+    .form-switch {
+        text-align: center;
+        margin-top: 1rem;
+        color: #666;
+    }
+    .form-switch a {
+        color: var(--primary-color);
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .form-switch a:hover {
+        text-decoration: underline;
+    }
+    .error-message {
+        color: red;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 1rem;
+        display: none;
+    }
+    #my-account-modal p {
+        text-align: center;
+        font-size: 1.1rem;
+    }
+    
+    /* Checkout Modal Styles */
+    .checkout-step { display: none; }
+    .checkout-step.active { display: block; }
+    .order-summary-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+    .order-summary-total { display: flex; justify-content: space-between; padding: 15px 0; font-weight: bold; font-size: 1.2rem; }
+    #shipping-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .paystack-logo { height: 25px; margin-right: 10px; }
+    .pay-button { display: flex; align-items: center; justify-content: center; }
+    .confirmation-icon { font-size: 4rem; color: #4CAF50; text-align: center; margin-bottom: 1rem; }
+    .confirmation-message { text-align: center; }
+    .confirmation-message p { margin-bottom: 5px; }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .navbar { padding: 1rem 3%; }
+        .nav-menu { position: fixed; left: -100%; top: 70px; flex-direction: column; background-color: white; width: 100%; text-align: center; transition: left 0.3s ease-in-out; box-shadow: 0 10px 27px rgba(0,0,0,0.05); padding: 2rem 0; gap: 2.5rem; }
+        .nav-menu.active { left: 0; }
+        .nav-item { margin: 1rem 0; }
+        .hamburger { display: flex; }
+        .hamburger.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger.active .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .hamburger.active .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        .product-grid { grid-template-columns: 1fr; }
+        .section-title-link { font-size: 2rem; }
+        .newsletter-section h2 { font-size: 2rem; }
+        .cart-sidebar { width: 90%; max-width: 350px; }
+        .newsletter-form { flex-direction: column; }
+    }
+</style>
 </head>
 <body>
 
@@ -918,342 +945,391 @@
             </div>
         </div>
     </div>
-
+<div id="auth-modal" class="modal">
+    <div class="modal-content auth-content">
+        <span class="close">&times;</span>
+        <div class="auth-forms">
+            <form id="login-form" class="auth-form active">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn">Log In</button>
+                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            </form>
+            <form id="register-form" class="auth-form">
+                <h2>Register</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Create Password" required>
+                <button type="submit" class="btn">Register</button>
+                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     // Initial cart data
-    let cart = JSON.parse(localStorage.getItem('feelDivineCart')) || [];
-    const products = [
-        { name: 'Body Wave HD', price: 250.00, id: 'bodywave' },
-        { name: 'Silky Straight', price: 275.00, id: 'silkystraight' },
-        { name: 'Deep Curl', price: 260.00, id: 'deepcurl' },
-        { name: 'Kinky Coily', price: 240.00, id: 'kinkycoily' },
-    ];
-    let cartTotal = 0;
+let cart = JSON.parse(localStorage.getItem('feelDivineCart')) || [];
+const products = [
+    { name: 'Body Wave HD', price: 250.00, id: 'bodywave' },
+    { name: 'Silky Straight', price: 275.00, id: 'silkystraight' },
+    { name: 'Deep Curl', price: 260.00, id: 'deepcurl' },
+    { name: 'Kinky Coily', price: 240.00, id: 'kinkycoily' },
+];
+let cartTotal = 0;
 
-    // A function to show any of the information modals
-    function showInfoModal(type, data = {}) {
-        const modal = document.getElementById('info-modal');
-        const modalBody = modal.querySelector('.modal-body');
-        let title = '';
-        let content = '';
+// A function to show any of the information modals
+function showInfoModal(type, data = {}) {
+    const modal = document.getElementById('info-modal');
+    const modalBody = modal.querySelector('.modal-body');
+    let title = '';
+    let content = '';
 
-        switch (type) {
-            case 'about':
-                title = 'About Feel Divine';
-                content = `
-                    <p>Welcome to Feel Divine, your ultimate destination for high-quality hair extensions. Founded in 2025, our mission is to empower women by providing products that inspire confidence and celebrate beauty in all its forms.</p>
-                    <p>From luxurious virgin hair to premium synthetic blends, every item in our collection is carefully selected to ensure it meets our high standards of quality and style. We believe that feeling divine is a right, not a luxury.</p>
-                    <p>Thank you for joining our community. We are excited to be a part of your beauty journey.</p>
-                `;
-                break;
-            case 'shipping':
-                title = 'Shipping & Returns Policy';
-                content = `
-                    <h3>Shipping Information</h3>
-                    <p>We are pleased to offer shipping across the country. Please allow the following timeframes:</p>
-                    <ul>
-                        <li><strong>Standard Shipping:</strong> 5-7 business days.</li>
-                        <li><strong>Express Shipping:</strong> 2-3 business days.</li>
-                    </ul>
-                    <p>Orders are typically processed and dispatched within 24 hours of being placed. You will receive a confirmation email with tracking information once your order is on its way.</p>
-                    <h3>Returns & Exchanges</h3>
-                    <p>Your satisfaction is our priority. If you're not completely in love with your purchase, you may return it within 14 days of receipt for a full refund or exchange, provided the items are unused, in their original packaging, and in the same condition that you received them.</p>
-                    <p>To initiate a return, please contact our support team at <strong>feeldivine@icloud.com</strong> with your order number and the reason for the return.</p>
-                `;
-                break;
-            case 'privacy':
-                title = 'Privacy Policy';
-                content = `
-                    <p>At Feel Divine, we are committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information.</p>
-                    <h3>Information We Collect</h3>
-                    <p>We collect information you provide directly to us, such as your name, email address, shipping address, and payment information. We also automatically collect certain information when you visit our site, including your IP address and browsing behavior.</p>
-                    <h3>How We Use Your Information</h3>
-                    <p>We use your information to process your orders, communicate with you about your purchase, provide customer support, and improve our services. We do not sell or share your personal information with third parties for their marketing purposes.</p>
-                    <h3>Data Security</h3>
-                    <p>We use a variety of security measures to protect your personal information. All transactions are processed through a secure gateway, and we do not store your credit card information on our servers.</p>
-                `;
-                break;
-            case 'contact-us':
-                title = 'Contact Us';
-                content = `
-                    <p>We'd love to hear from you! Here's how you can get in touch:</p>
-                    <ul>
-                        <li><strong>Email:</strong> feeldivine@icloud.com</li>
-                        <li><strong>Phone:</strong> +234 800 123 4567</li>
-                        <li><strong>Live Chat:</strong> Available on our website during business hours.</li>
-                    </ul>
-                    <p>Our customer support team is available from Monday to Friday, 9:00 AM - 5:00 PM WAT.</p>
-                `;
-                break;
-            case 'product-info':
-                title = data.name;
-                content = `
-                    <img src="${data.image}" alt="${data.name}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;">
-                    <p style="font-size: 1.2rem; font-weight: 600; color: var(--primary-color);">₦${data.price.toFixed(2)}</p>
-                    <p>${data.description}</p>
-                `;
-                break;
-            default:
-                title = 'Information';
-                content = '<p>No content available.</p>';
-        }
-
-        modalBody.innerHTML = `<h2>${title}</h2>${content}`;
-        modal.style.display = 'block';
-    }
-
-    // Modal close functions
-    function setupModalClose(modalId, closeBtnClass) {
-        const modal = document.getElementById(modalId);
-        const closeBtn = modal.querySelector(`.${closeBtnClass}`);
-        closeBtn.onclick = () => { modal.style.display = 'none'; };
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-    }
-    setupModalClose('info-modal', 'close');
-    setupModalClose('auth-modal', 'close');
-
-    // Cart functionality
-    function updateCartTotal() {
-        const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        document.getElementById('cart-subtotal').textContent = `₦${total.toFixed(2)}`;
-        cartTotal = total;
-        updateCheckoutTotal();
-        return total;
-    }
-
-    function renderCart() {
-        const cartBody = document.querySelector('.cart-body');
-        cartBody.innerHTML = '';
-        if (cart.length === 0) {
-            cartBody.innerHTML = '<p class="empty-cart-message">Your bag is empty.</p>';
-            document.getElementById('cart-count').textContent = '0';
-            updateCartTotal(); // Added this line to update the total to 0
-            return;
-        }
-        cart.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover;">
-                <div class="cart-item-details">
-                    <h4>${item.name}</h4>
-                    <p class="cart-item-price">₦${item.price.toFixed(2)}</p>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" data-id="${item.id}" data-action="decrease">-</button>
-                        <span>${item.quantity}</span>
-                        <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
-                    </div>
-                </div>
-                <button class="remove-item" data-id="${item.id}">&times;</button>
+    switch (type) {
+        case 'about':
+            title = 'About Feel Divine';
+            content = `
+                <p>Welcome to Feel Divine, your ultimate destination for high-quality hair extensions. Founded in 2025, our mission is to empower women by providing products that inspire confidence and celebrate beauty in all its forms.</p>
+                <p>From luxurious virgin hair to premium synthetic blends, every item in our collection is carefully selected to ensure it meets our high standards of quality and style. We believe that feeling divine is a right, not a luxury.</p>
+                <p>Thank you for joining our community. We are excited to be a part of your beauty journey.</p>
             `;
-            cartBody.appendChild(itemElement);
-        });
-        updateCartTotal();
-        document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            break;
+        case 'shipping':
+            title = 'Shipping & Returns Policy';
+            content = `
+                <h3>Shipping Information</h3>
+                <p>We are pleased to offer shipping across the country. Please allow the following timeframes:</p>
+                <ul>
+                    <li><strong>Standard Shipping:</strong> 5-7 business days.</li>
+                    <li><strong>Express Shipping:</strong> 2-3 business days.</li>
+                </ul>
+                <p>Orders are typically processed and dispatched within 24 hours of being placed. You will receive a confirmation email with tracking information once your order is on its way.</p>
+                <h3>Returns & Exchanges</h3>
+                <p>Your satisfaction is our priority. If you're not completely in love with your purchase, you may return it within 14 days of receipt for a full refund or exchange, provided the items are unused, in their original packaging, and in the same condition that you received them.</p>
+                <p>To initiate a return, please contact our support team at <strong>feeldivine@icloud.com</strong> with your order number and the reason for the return.</p>
+            `;
+            break;
+        case 'privacy':
+            title = 'Privacy Policy';
+            content = `
+                <p>At Feel Divine, we are committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information.</p>
+                <h3>Information We Collect</h3>
+                <p>We collect information you provide directly to us, such as your name, email address, shipping address, and payment information. We also automatically collect certain information when you visit our site, including your IP address and browsing behavior.</p>
+                <h3>How We Use Your Information</h3>
+                <p>We use your information to process your orders, communicate with you about your purchase, provide customer support, and improve our services. We do not sell or share your personal information with third parties for their marketing purposes.</p>
+                <h3>Data Security</h3>
+                <p>We use a variety of security measures to protect your personal information. All transactions are processed through a secure gateway, and we do not store your credit card information on our servers.</p>
+            `;
+            break;
+        case 'contact-us':
+            title = 'Contact Us';
+            content = `
+                <p>We'd love to hear from you! Here's how you can get in touch:</p>
+                <ul>
+                    <li><strong>Email:</strong> feeldivine@icloud.com</li>
+                    <li><strong>Phone:</strong> +234 800 123 4567</li>
+                    <li><strong>Live Chat:</strong> Available on our website during business hours.</li>
+                </ul>
+                <p>Our customer support team is available from Monday to Friday, 9:00 AM - 5:00 PM WAT.</p>
+            `;
+            break;
+        case 'product-info':
+            title = data.name;
+            content = `
+                <img src="${data.image}" alt="${data.name}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;">
+                <p style="font-size: 1.2rem; font-weight: 600; color: var(--primary-color);">₦${data.price.toFixed(2)}</p>
+                <p>${data.description}</p>
+            `;
+            break;
+        default:
+            title = 'Information';
+            content = '<p>No content available.</p>';
     }
 
-    function addToCart(product) {
-        const existingItem = cart.find(item => item.id === product.id);
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({ ...product, quantity: 1 });
+    modalBody.innerHTML = `<h2>${title}</h2>${content}`;
+    modal.style.display = 'block';
+}
+
+// Modal close functions
+function setupModalClose(modalId, closeBtnClass) {
+    const modal = document.getElementById(modalId);
+    const closeBtn = modal.querySelector(`.${closeBtnClass}`);
+    closeBtn.onclick = () => { modal.style.display = 'none'; };
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = 'none';
         }
-        localStorage.setItem('feelDivineCart', JSON.stringify(cart));
-        renderCart();
+    };
+}
+setupModalClose('info-modal', 'close');
+setupModalClose('auth-modal', 'close');
+
+// Cart functionality
+function updateCartTotal() {
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    document.getElementById('cart-subtotal').textContent = `₦${total.toFixed(2)}`;
+    cartTotal = total;
+    updateCheckoutTotal();
+    return total;
+}
+
+function renderCart() {
+    const cartBody = document.querySelector('.cart-body');
+    cartBody.innerHTML = '';
+    if (cart.length === 0) {
+        cartBody.innerHTML = '<p class="empty-cart-message">Your bag is empty.</p>';
+        document.getElementById('cart-count').textContent = '0';
+        updateCartTotal(); // Added this line to update the total to 0
+        return;
     }
-
-    document.querySelectorAll('.product-card .btn').forEach((button, index) => {
-        button.addEventListener('click', () => {
-            addToCart(products[index]);
-        });
+    cart.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('cart-item');
+        itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover;">
+            <div class="cart-item-details">
+                <h4>${item.name}</h4>
+                <p class="cart-item-price">₦${item.price.toFixed(2)}</p>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" data-id="${item.id}" data-action="decrease">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="quantity-btn" data-id="${item.id}" data-action="increase">+</button>
+                </div>
+            </div>
+            <button class="remove-item" data-id="${item.id}">&times;</button>
+        `;
+        cartBody.appendChild(itemElement);
     });
+    updateCartTotal();
+    document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
 
-    document.querySelector('.cart-body').addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.classList.contains('quantity-btn')) {
-            const id = target.dataset.id;
-            const action = target.dataset.action;
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                if (action === 'increase') {
-                    item.quantity++;
-                } else if (action === 'decrease' && item.quantity > 1) {
-                    item.quantity--;
-                }
-                localStorage.setItem('feelDivineCart', JSON.stringify(cart));
-                renderCart();
+function addToCart(product) {
+    const existingItem = cart.find(item => item.id === product.id);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    localStorage.setItem('feelDivineCart', JSON.stringify(cart));
+    renderCart();
+}
+
+document.querySelectorAll('.product-card .btn').forEach((button, index) => {
+    button.addEventListener('click', () => {
+        addToCart(products[index]);
+    });
+});
+
+document.querySelector('.cart-body').addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.classList.contains('quantity-btn')) {
+        const id = target.dataset.id;
+        const action = target.dataset.action;
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            if (action === 'increase') {
+                item.quantity++;
+            } else if (action === 'decrease' && item.quantity > 1) {
+                item.quantity--;
             }
-        } else if (target.classList.contains('remove-item')) {
-            const id = target.dataset.id;
-            cart = cart.filter(item => item.id !== id);
             localStorage.setItem('feelDivineCart', JSON.stringify(cart));
             renderCart();
         }
-    });
+    } else if (target.classList.contains('remove-item')) {
+        const id = target.dataset.id;
+        cart = cart.filter(item => item.id !== id);
+        localStorage.setItem('feelDivineCart', JSON.stringify(cart));
+        renderCart();
+    }
+});
 
-    // Sidebar and Search Overlay functionality
-    document.getElementById('cart-icon').addEventListener('click', () => {
-        document.getElementById('cart-sidebar').classList.add('active');
-    });
-    document.getElementById('close-cart').addEventListener('click', () => {
-        document.getElementById('cart-sidebar').classList.remove('active');
-    });
-    // Event listener for the "Continue Shopping" button
-    document.querySelector('.continue-shopping-btn').addEventListener('click', () => {
-        document.getElementById('cart-sidebar').classList.remove('active');
-    });
+// Sidebar and Search Overlay functionality
+document.getElementById('cart-icon').addEventListener('click', () => {
+    document.getElementById('cart-sidebar').classList.add('active');
+});
+document.getElementById('close-cart').addEventListener('click', () => {
+    document.getElementById('cart-sidebar').classList.remove('active');
+});
+// Event listener for the "Continue Shopping" button
+document.querySelector('.continue-shopping-btn').addEventListener('click', () => {
+    document.getElementById('cart-sidebar').classList.remove('active');
+});
 
-    document.getElementById('search-icon').addEventListener('click', () => {
-        document.getElementById('search-overlay').style.display = 'flex';
-    });
-    document.getElementById('close-search').addEventListener('click', () => {
-        document.getElementById('search-overlay').style.display = 'none';
-    });
-    
-    // Search functionality
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        const productCards = document.querySelectorAll('.product-card');
-        let found = false;
-        productCards.forEach(card => {
-            const title = card.querySelector('h3').textContent.toLowerCase();
-            if (title.includes(query)) {
-                card.classList.remove('hidden');
-                found = true;
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-        document.getElementById('no-results-message').style.display = found || query === '' ? 'none' : 'block';
-    });
+document.getElementById('search-icon').addEventListener('click', () => {
+    document.getElementById('search-overlay').style.display = 'flex';
+});
+document.getElementById('close-search').addEventListener('click', () => {
+    document.getElementById('search-overlay').style.display = 'none';
+});
 
-    // Checkout Modal
-    const checkoutModal = document.getElementById('checkout-modal');
-    const checkoutBtn = document.querySelector('.checkout-btn');
-    const shippingForm = document.getElementById('shipping-form');
+// Auth Modal functionality
+document.getElementById('profile-icon').addEventListener('click', () => {
+    document.getElementById('auth-modal').style.display = 'block';
+});
 
-    function openCheckoutModal() {
-        if (cart.length === 0) {
-            alert("Your cart is empty. Please add items to proceed to checkout.");
-            return;
+document.getElementById('show-register').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('login-form').classList.remove('active');
+    document.getElementById('register-form').classList.add('active');
+});
+
+document.getElementById('show-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('register-form').classList.remove('active');
+    document.getElementById('login-form').classList.add('active');
+});
+
+// A placeholder for the form submission since we don't have a backend
+document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Login feature coming soon!');
+});
+
+document.getElementById('register-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Registration feature coming soon!');
+});
+
+// Search functionality
+const searchInput = document.getElementById('search-input');
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    const productCards = document.querySelectorAll('.product-card');
+    let found = false;
+    productCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(query)) {
+            card.classList.remove('hidden');
+            found = true;
+        } else {
+            card.classList.add('hidden');
         }
-        renderOrderSummary();
-        showCheckoutStep(1);
-        checkoutModal.style.display = 'block';
-        document.getElementById('cart-sidebar').classList.remove('active');
+    });
+    document.getElementById('no-results-message').style.display = found || query === '' ? 'none' : 'block';
+});
+
+// Checkout Modal
+const checkoutModal = document.getElementById('checkout-modal');
+const checkoutBtn = document.querySelector('.checkout-btn');
+const shippingForm = document.getElementById('shipping-form');
+
+function openCheckoutModal() {
+    if (cart.length === 0) {
+        alert("Your cart is empty. Please add items to proceed to checkout.");
+        return;
+    }
+    renderOrderSummary();
+    showCheckoutStep(1);
+    checkoutModal.style.display = 'block';
+    document.getElementById('cart-sidebar').classList.remove('active');
+}
+
+function renderOrderSummary() {
+    const orderSummaryDiv = document.getElementById('order-summary');
+    orderSummaryDiv.innerHTML = '';
+    cart.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('order-summary-item');
+        itemElement.innerHTML = `
+            <span>${item.name} x${item.quantity}</span>
+            <span>₦${(item.price * item.quantity).toFixed(2)}</span>
+        `;
+        orderSummaryDiv.appendChild(itemElement);
+    });
+    updateCheckoutTotal();
+}
+
+function updateCheckoutTotal() {
+    document.getElementById('checkout-total').textContent = `₦${cartTotal.toFixed(2)}`;
+    document.getElementById('payment-amount').textContent = `₦${cartTotal.toFixed(2)}`;
+}
+
+function showCheckoutStep(step) {
+    const steps = document.querySelectorAll('.checkout-step');
+    steps.forEach(s => s.classList.remove('active'));
+    document.getElementById(`checkout-step-${step}`).classList.add('active');
+}
+
+// Event listener for "Proceed to Checkout" button in the cart sidebar
+checkoutBtn.addEventListener('click', openCheckoutModal);
+
+// Event listener for the shipping form submission
+shippingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Move to the payment step
+    showCheckoutStep(2);
+});
+
+// Paystack payment integration starts here
+// =========================================================================
+document.getElementById('paystack-button').addEventListener('click', initializePaystackPayment);
+
+function initializePaystackPayment() {
+    const email = document.getElementById('shipping-email').value;
+    const totalAmountInKobo = Math.round(cartTotal * 100); // Convert Naira to Kobo
+
+    if (!email) {
+        alert('Please provide your email address.');
+        return;
     }
 
-    function renderOrderSummary() {
-        const orderSummaryDiv = document.getElementById('order-summary');
-        orderSummaryDiv.innerHTML = '';
-        cart.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('order-summary-item');
-            itemElement.innerHTML = `
-                <span>${item.name} x${item.quantity}</span>
-                <span>₦${(item.price * item.quantity).toFixed(2)}</span>
-            `;
-            orderSummaryDiv.appendChild(itemElement);
-        });
-        updateCheckoutTotal();
-    }
+    const handler = PaystackPop.setup({
+        key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139', // <-- **REQUIRED:** REPLACE with your actual Public Key
+        email: email,
+        amount: totalAmountInKobo,
+        ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a unique reference
+        currency: 'NGN',
+        channels: ['card', 'bank', 'ussd', 'qr'],
+        metadata: {
+            cart_items: cart,
+            custom_fields: [{
+                display_name: "Customer Name",
+                variable_name: "customer_name",
+                value: document.getElementById('shipping-name').value
+            }]
+        },
+        
+        // This is called after the payment is complete
+        callback: function(response){
+            // For a static site, this is where you handle the success.
+            // The transaction is complete and verified by Paystack's server.
+            alert('Payment successful! Your transaction reference is: ' + response.reference);
+            
+            // Show the confirmation step
+            showCheckoutStep(3);
 
-    function updateCheckoutTotal() {
-        document.getElementById('checkout-total').textContent = `₦${cartTotal.toFixed(2)}`;
-        document.getElementById('payment-amount').textContent = `₦${cartTotal.toFixed(2)}`;
-    }
-
-    function showCheckoutStep(step) {
-        const steps = document.querySelectorAll('.checkout-step');
-        steps.forEach(s => s.classList.remove('active'));
-        document.getElementById(`checkout-step-${step}`).classList.add('active');
-    }
-
-    // Event listener for "Proceed to Checkout" button in the cart sidebar
-    checkoutBtn.addEventListener('click', openCheckoutModal);
-
-    // Event listener for the shipping form submission
-    shippingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Move to the payment step
-        showCheckoutStep(2);
+            // Clear the cart after successful payment
+            cart = [];
+            localStorage.setItem('feelDivineCart', JSON.stringify(cart));
+            updateCartTotal();
+        },
+        
+        // This is called if the payment is not completed
+        onClose: function(){
+            alert('Transaction was not completed, window closed.');
+        }
     });
 
-    // Paystack payment integration starts here
-    // =========================================================================
-    document.getElementById('paystack-button').addEventListener('click', initializePaystackPayment);
+    handler.openIframe(); // Open the payment pop-up
+}
 
-    function initializePaystackPayment() {
-        const email = document.getElementById('shipping-email').value;
-        const totalAmountInKobo = Math.round(cartTotal * 100); // Convert Naira to Kobo
+// Close the modal when the "X" button is clicked
+document.querySelector('#checkout-modal .close').onclick = function() {
+    checkoutModal.style.display = 'none';
+};
 
-        if (!email) {
-            alert('Please provide your email address.');
-            return;
-        }
-
-        const handler = PaystackPop.setup({
-            key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139', // <-- **REQUIRED:** REPLACE with your actual Public Key
-            email: email,
-            amount: totalAmountInKobo,
-            ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a unique reference
-            currency: 'NGN',
-            channels: ['card', 'bank', 'ussd', 'qr'],
-            metadata: {
-                cart_items: cart,
-                custom_fields: [{
-                    display_name: "Customer Name",
-                    variable_name: "customer_name",
-                    value: document.getElementById('shipping-name').value
-                }]
-            },
-            
-            // This is called after the payment is complete
-            callback: function(response){
-                // For a static site, this is where you handle the success.
-                // The transaction is complete and verified by Paystack's server.
-                alert('Payment successful! Your transaction reference is: ' + response.reference);
-                
-                // Show the confirmation step
-                showCheckoutStep(3);
-
-                // Clear the cart after successful payment
-                cart = [];
-                localStorage.setItem('feelDivineCart', JSON.stringify(cart));
-                updateCartTotal();
-            },
-            
-            // This is called if the payment is not completed
-            onClose: function(){
-                alert('Transaction was not completed, window closed.');
-            }
-        });
-
-        handler.openIframe(); // Open the payment pop-up
-    }
-
-    // Close the modal when the "X" button is clicked
-    document.querySelector('#checkout-modal .close').onclick = function() {
+// Close the modal if the user clicks outside of it
+window.addEventListener('click', function(event) {
+    if (event.target == checkoutModal) {
         checkoutModal.style.display = 'none';
-    };
+    }
+});
+// =========================================================================
+// End of Paystack payment integration
 
-    // Close the modal if the user clicks outside of it
-    window.addEventListener('click', function(event) {
-        if (event.target == checkoutModal) {
-            checkoutModal.style.display = 'none';
-        }
-    });
-    // =========================================================================
-    // End of Paystack payment integration
-    
-    // Initial render
-    renderCart();
+// Initial render
+renderCart();
 </script>
 </body>
 </html>
