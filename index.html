@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feel Divine - Your Hair Extension Store</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
-    <!-- Paystack Inline Script -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    
-<style>
-    /* Reset and Base Styles */
+    <title>Feel Divine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset and Base Styles */
     :root {
         --primary-color: #d4357a;
         --primary-hover: #b8295f;
@@ -837,213 +830,414 @@
             flex-direction: column; 
         }
     }
-</style>
+    </style>
 </head>
 <body>
-
     <header>
-    <nav class="navbar">
-        <a href="#" class="logo">Feel Divine</a>
+        <nav class="navbar">
+            <a href="#" class="logo">Feel Divine</a>
 
-        <ul class="nav-menu">
-            <li class="nav-item"><a href="#hair-extensions" class="nav-link">Hair Extensions</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Wig Making</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Accessories</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Shop All</a></li>
-        </ul>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#hair-extensions" class="nav-link">Hair Extensions</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Wig Making</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Accessories</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Shop All</a></li>
+            </ul>
 
-        <div class="nav-icons">
-            <a href="#" id="search-icon"><i class="fas fa-search"></i></a>
-            
-            <div class="profile-icon-container">
-                <a href="#" id="profile-icon"><i class="fas fa-user"></i></a>
-                <div id="profile-dropdown" class="profile-dropdown">
-                    <a href="#">Login</a>
-                    <a href="#">Register</a>
+            <div class="nav-icons">
+                <a href="#" id="search-icon"><i class="fas fa-search"></i></a>
+
+                <div class="profile-icon-container">
+                    <a href="#" id="profile-icon"><i class="fas fa-user"></i></a>
+                    <div id="profile-dropdown" class="profile-dropdown">
+                        <a href="#" id="login-link">Login</a>
+                        <a href="#" id="register-link">Register</a>
+                    </div>
+                </div>
+
+                <a href="#" id="cart-icon" class="cart-icon-container">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </a>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </div>
-
-            <a href="#" id="cart-icon" class="cart-icon-container">
-                <i class="fas fa-shopping-bag"></i>
-                <span id="cart-count" class="cart-badge">0</span>
-            </a>
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
     <main>
-        <section id="shop" class="product-section">
-            <a href="#shop" class="section-title-link">Hair Extensions</a>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="https://placehold.co/300x300/f06292/white?text=Body+Wave+HD" alt="Body Wave HD" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
-                    <h3>Body Wave HD</h3>
-                    <p class="price">₦250.00</p>
-                    <button class="btn">Add to Cart</button>
+        <section class="product-section">
+            <a href="#" class="section-title-link">Hair Extensions</a>
+            <div class="product-grid" id="product-grid">
+                <div class="product-card" data-name="Body Wave" data-price="250" data-image="path/to/your/image1.jpg">
+                    <img src="path/to/your/image1.jpg" alt="Body Wave">
+                    <h3>Body Wave</h3>
+                    <p class="price">$250.00</p>
+                    <button class="btn add-to-cart">Add to Bag</button>
                 </div>
-                <div class="product-card">
-                    <img src="https://placehold.co/300x300/f06292/white?text=Silky+Straight" alt="Silky Straight" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
-                    <h3>Silky Straight</h3>
-                    <p class="price">₦275.00</p>
-                    <button class="btn">Add to Cart</button>
-                </div>
-                <div class="product-card">
-                    <img src="https://placehold.co/300x300/f06292/white?text=Deep+Curl" alt="Deep Curl" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
-                    <h3>Deep Curl</h3>
-                    <p class="price">₦260.00</p>
-                    <button class="btn">Add to Cart</button>
-                </div>
-                <div class="product-card">
-                    <img src="https://placehold.co/300x300/f06292/white?text=Kinky+Coily" alt="Kinky Coily" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/ffffff?text=Image+Not+Found';">
-                    <h3>Kinky Coily</h3>
-                    <p class="price">₦240.00</p>
-                    <button class="btn">Add to Cart</button>
+                <div class="product-card" data-name="Deep Wave" data-price="280" data-image="path/to/your/image2.jpg">
+                    <img src="path/to/your/image2.jpg" alt="Deep Wave">
+                    <h3>Deep Wave</h3>
+                    <p class="price">$280.00</p>
+                    <button class="btn add-to-cart">Add to Bag</button>
                 </div>
                 </div>
-            <p id="no-results-message">Sorry, no products found matching your search.</p>
         </section>
 
-         <section class="newsletter-section">
-            <h2>Join Our Beauty Club</h2>
-            <p>Get exclusive deals, new product alerts, and beauty tips sent to your inbox.</p>
-            <form class="newsletter-form" action="https://formspree.io/f/mjkelwdv" method="POST">
-                <input type="email" name="email" placeholder="Enter your email" required> 
-                <button type="submit" class="btn">Subscribe</button>
+        <section class="newsletter-section">
+            <h2>Join Our Mailing List</h2>
+            <p>Get exclusive offers and beauty tips delivered straight to your inbox.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
             </form>
         </section>
     </main>
 
-    <footer id="contact-section">
+    <footer>
         <div class="footer-container">
             <div class="footer-about">
-                <h3>Feel Divine</h3>
-                <p>Your one-stop shop for all things beauty and glam. We believe every woman deserves to feel confident and beautiful.</p>
+                <h3>About Us</h3>
+                <p>Feel Divine offers high-quality wigs and hair extensions to make you feel beautiful and confident.</p>
             </div>
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a onclick="showInfoModal('about')">About Us</a></li>
-                    <li><a onclick="showInfoModal('shipping')">Shipping & Returns</a></li>
-                    <li><a onclick="showInfoModal('privacy')">Privacy Policy</a></li>
-                    <li><a onclick="showInfoModal('contact-us')">Contact Us</a></li>
+                    <li><a href="#">Shop All</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-social">
                 <h3>Follow Us</h3>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Feel Divine. All Rights Reserved.</p>
+            <p>&copy; 2025 Feel Divine. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- All Modals -->
     <div id="search-overlay" class="search-overlay">
-        <span class="close-btn" id="close-search">&times;</span>
+        <span class="close-btn" id="close-search-btn">&times;</span>
         <div class="search-overlay-content">
-            <input type="search" placeholder="Search for products..." id="search-input">
-            <button aria-label="Submit search" id="search-button"><i class="fas fa-search"></i></button>
+            <input type="text" id="search-input" placeholder="Search for products...">
+            <button id="search-overlay-btn"><i class="fas fa-search"></i></button>
         </div>
     </div>
+
     <div id="cart-sidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3>Your Bag</h3>
-            <span class="close-btn" id="close-cart">&times;</span>
+            <span class="close-btn" id="close-cart-btn">&times;</span>
         </div>
-        <div class="cart-body"></div>
+        <div class="cart-body" id="cart-items">
+            <p id="empty-cart-message" class="empty-cart-message">Your bag is empty.</p>
+        </div>
         <div class="cart-footer">
-            <button class="btn continue-shopping-btn">Continue Shopping</button>
-            <div class="subtotal"><span>Subtotal:</span><span id="cart-subtotal">₦0.00</span></div>
-            <button class="btn checkout-btn">Proceed to Checkout</button>
+            <div class="subtotal">
+                <span>Subtotal:</span>
+                <span id="subtotal-amount">$0.00</span>
+            </div>
+            <button class="btn checkout-btn" id="checkout-btn">Checkout to Payment</button>
         </div>
     </div>
-    <div id="info-modal" class="modal"><div class="modal-content"><span class="close">&times;</span><div class="modal-body"></div></div></div>
-    <div id="auth-modal" class="modal"><div class="modal-content"><span class="close">&times;</span><div class="modal-body"></div></div></div>
-    <div id="checkout-modal" class="modal">
+
+    <div id="auth-modal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-body">
-                <div id="checkout-step-1" class="checkout-step active">
-                    <h2>Checkout</h2><h3>Order Summary</h3>
-                    <div id="order-summary"></div>
-                    <div class="order-summary-total"><span>Total:</span><span id="checkout-total"></span></div><hr style="margin: 1.5rem 0;">
-                    <h3>Shipping Information</h3>
-                    <form id="shipping-form">
-                        <div class="form-group"><label for="shipping-email">Email</label><input type="email" id="shipping-email" required></div>
-                        <div class="form-group"><label for="shipping-name">Full Name</label><input type="text" id="shipping-name" required></div>
-                        <div class="form-group"><label for="shipping-address">Address</label><input type="text" id="shipping-address" required></div>
-                        <div class="form-group"><label for="shipping-city">City</label><input type="text" id="shipping-city" required></div>
-                        <button type="submit" class="btn">Proceed to Payment</button>
-                    </form>
-                </div>
-                <div id="checkout-step-2" class="checkout-step">
-                    <h2>Payment</h2>
-                    <p>Click the button below to complete your payment securely with Paystack.</p>
-                    <button id="paystack-button" class="btn pay-button">
-                        <img src="https://assets.paystack.com/assets/img/logos/merchants/header-logo.svg" alt="Paystack" class="paystack-logo">
-                        Pay <span id="payment-amount"></span>
-                    </button>
-                </div>
-                <div id="checkout-step-3" class="checkout-step">
-                    <div class="confirmation-icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="confirmation-message">
-                        <h2>Payment Successful!</h2>
-                        <p>Thank you for your purchase.</p>
-                        <p>Your order confirmation has been sent to your email.</p>
+            <span class="close" id="close-auth-modal">&times;</span>
+            <div class="auth-forms">
+                <div id="login-form" class="auth-form active">
+                    <h2>Login</h2>
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
                     </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button class="btn">Login</button>
+                    <p class="form-switch">Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+                </div>
+
+                <div id="register-form" class="auth-form">
+                    <h2>Register</h2>
+                    <div class="form-group">
+                        <label for="register-name">Name</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button class="btn">Register</button>
+                    <p class="form-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
                 </div>
             </div>
         </div>
     </div>
-<div id="auth-modal" class="modal">
-    <div class="modal-content auth-content">
-        <span class="close">&times;</span>
-        <div class="auth-forms">
-            <form id="login-form" class="auth-form active">
-                <h2>Login</h2>
-                <input type="email" placeholder="Email Address" required>
-                <input type="password" placeholder="Password" required>
-                <button type="submit" class="btn">Log In</button>
-                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
-            </form>
-            <form id="register-form" class="auth-form">
-                <h2>Register</h2>
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email Address" required>
-                <input type="password" placeholder="Create Password" required>
-                <button type="submit" class="btn">Register</button>
-                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
-            </form>
-        </div>
-    </div>
-</div>
-<script>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // === HTML Element References ===
+        const searchIcon = document.getElementById('search-icon');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearchBtn = document.getElementById('close-search-btn');
+        const searchInput = document.getElementById('search-input');
+        const productGrid = document.getElementById('product-grid');
+        const noResultsMessage = document.getElementById('no-results-message');
+
         const profileIcon = document.getElementById('profile-icon');
         const profileDropdown = document.getElementById('profile-dropdown');
 
-        if (profileIcon && profileDropdown) {
-            profileIcon.addEventListener('click', (event) => {
-                event.preventDefault(); // Prevents the link from navigating
-                profileDropdown.classList.toggle('show');
-            });
+        const cartIcon = document.getElementById('cart-icon');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCartBtn = document.getElementById('close-cart-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const subtotalAmount = document.getElementById('subtotal-amount');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const checkoutBtn = document.getElementById('checkout-btn');
 
-            // Close the dropdown if the user clicks outside of it
-            document.addEventListener('click', (event) => {
-                if (!profileIcon.contains(event.target) && !profileDropdown.contains(event.target)) {
-                    profileDropdown.classList.remove('show');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        const loginLink = document.getElementById('login-link');
+        const registerLink = document.getElementById('register-link');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthModal = document.getElementById('close-auth-modal');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+
+        // === State Variables ===
+        let cart = [];
+        let total = 0;
+
+        // === Function to Toggle Elements ===
+        function toggleElement(element, show = true) {
+            if (show) {
+                element.style.display = 'flex';
+                setTimeout(() => element.classList.add('active'), 10);
+            } else {
+                element.classList.remove('active');
+                setTimeout(() => element.style.display = 'none', 300);
+            }
+        }
+
+        // === Event Listeners for Header Icons ===
+        searchIcon.addEventListener('click', (event) => {
+            event.preventDefault();
+            searchOverlay.style.display = 'flex';
+            searchInput.focus();
+        });
+        closeSearchBtn.addEventListener('click', () => {
+            searchOverlay.style.display = 'none';
+        });
+
+        profileIcon.addEventListener('click', (event) => {
+            event.preventDefault();
+            profileDropdown.classList.toggle('show');
+        });
+        document.addEventListener('click', (event) => {
+            if (!profileIcon.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        cartIcon.addEventListener('click', (event) => {
+            event.preventDefault();
+            cartSidebar.classList.add('active');
+        });
+        closeCartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('active');
+        });
+        document.addEventListener('click', (event) => {
+            if (!cartSidebar.contains(event.target) && !cartIcon.contains(event.target) && cartSidebar.classList.contains('active')) {
+                cartSidebar.classList.remove('active');
+            }
+        });
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // === Product Search Functionality ===
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            let found = false;
+
+            productCards.forEach(card => {
+                const productName = card.getAttribute('data-name').toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                    found = true;
+                } else {
+                    card.classList.add('hidden');
                 }
             });
+
+            if (found) {
+                noResultsMessage.style.display = 'none';
+            } else {
+                noResultsMessage.style.display = 'block';
+            }
+        });
+
+        // === Cart Functionality ===
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productCard = event.target.closest('.product-card');
+                const productName = productCard.getAttribute('data-name');
+                const productPrice = parseFloat(productCard.getAttribute('data-price'));
+                const productImage = productCard.getAttribute('data-image');
+                
+                addItemToCart(productName, productPrice, productImage);
+                cartSidebar.classList.add('active'); // Open cart on add to bag
+            });
+        });
+
+        function addItemToCart(name, price, image) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ name, price, image, quantity: 1 });
+            }
+            renderCart();
         }
+
+        function renderCart() {
+            cartItemsContainer.innerHTML = '';
+            total = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+            } else {
+                emptyCartMessage.style.display = 'none';
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item');
+                    cartItem.innerHTML = `
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn decrease-qty" data-name="${item.name}">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn increase-qty" data-name="${item.name}">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-item" data-name="${item.name}">&times;</button>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                    total += item.price * item.quantity;
+                });
+            }
+
+            subtotalAmount.textContent = `$${total.toFixed(2)}`;
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        cartItemsContainer.addEventListener('click', (event) => {
+            const name = event.target.dataset.name;
+            if (event.target.classList.contains('increase-qty')) {
+                const item = cart.find(i => i.name === name);
+                item.quantity++;
+            } else if (event.target.classList.contains('decrease-qty')) {
+                const item = cart.find(i => i.name === name);
+                if (item.quantity > 1) {
+                    item.quantity--;
+                } else {
+                    cart = cart.filter(i => i.name !== name);
+                }
+            } else if (event.target.classList.contains('remove-item')) {
+                cart = cart.filter(i => i.name !== name);
+            }
+            renderCart();
+        });
+
+        // === Auth Modal Functionality ===
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.style.display = 'block';
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            profileDropdown.classList.remove('show');
+        });
+
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.style.display = 'block';
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            profileDropdown.classList.remove('show');
+        });
+
+        closeAuthModal.addEventListener('click', () => {
+            authModal.style.display = 'none';
+        });
+
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+        });
+
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.classList.remove('active');
+            loginForm.classList.add('active');
+        });
+
+        // === Paystack Payment Integration ===
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                const handler = PaystackPop.setup({
+                    key: 'pk_live_44c9f1fdf5cf23eee9f9715dcaa237c174f6e139', // Your Paystack Public Key
+                    email: 'customer@email.com', // Replace with customer email
+                    amount: total * 100, // Amount in kobo
+                    currency: 'NGN',
+                    channels: ['card', 'bank', 'ussd'],
+                    callback: function(response){
+                        // Reference is a unique transaction reference
+                        const reference = response.reference;
+                        alert('Payment successful! Your transaction reference is: ' + reference);
+                        // Clear cart after successful payment
+                        cart = [];
+                        renderCart();
+                    },
+                    onClose: function(){
+                        alert('Transaction was not completed, window closed.');
+                    }
+                });
+                handler.openIframe();
+            } else {
+                alert('Your bag is empty. Add items to proceed to checkout.');
+            }
+        });
     });
-</script>
+    </script>
+
 </body>
 </html>
