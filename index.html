@@ -815,11 +815,14 @@
         .nav-menu a {
             font-weight: 500;
         }
-        .nav-menu .nav-item-account a {
-            font-weight: bold;
-            color: var(--primary-color);
+        .nav-menu hr {
+            width: 80%;
+            border: none;
+            height: 1px;
+            background-color: #eee;
+            margin: 1.5rem 0;
         }
-
+        
         .nav-icons {
             font-size: 1.5rem;
             gap: 1.5rem;
@@ -858,14 +861,6 @@
         .nav-menu.active .mobile-search {
             display: block;
         }
-        .nav-menu .nav-item-account,
-        .nav-menu .nav-item-info {
-            display: none;
-        }
-        .nav-menu.active .nav-item-account,
-        .nav-menu.active .nav-item-info {
-            display: block;
-        }
     }
     </style>
 </head>
@@ -880,6 +875,11 @@
                 </div>
                 <li class="nav-item"><a href="#hair-extensions" class="nav-link hair-extensions-link">Hair Extensions</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Shop All</a></li>
+                <hr>
+                <li class="nav-item"><a href="#" class="nav-link" id="mobile-account-link">My Account</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-modal="contact">Contact Us</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-modal="faqs">FAQ</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-modal="about">About Us</a></li>
             </ul>
 
             <div class="nav-icons">
@@ -944,10 +944,10 @@
             <div class="footer-links">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Shop All</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Blog</a></li>
+                    <li><a href="#" data-modal="shop-all">Shop All</a></li>
+                    <li><a href="#" data-modal="contact">Contact Us</a></li>
+                    <li><a href="#" data-modal="faqs">FAQs</a></li>
+                    <li><a href="#" data-modal="blog">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-social">
@@ -1026,6 +1026,14 @@
         </div>
     </div>
 
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-info-modal">&times;</span>
+            <h2 id="info-modal-title"></h2>
+            <div id="info-modal-content"></div>
+        </div>
+    </div>
+
     <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <script>
@@ -1041,6 +1049,7 @@
         const profileIcon = document.getElementById('profile-icon');
         const profileDropdown = document.getElementById('profile-dropdown');
         const mobileAccountLink = document.getElementById('mobile-account-link');
+        const footerLinks = document.querySelectorAll('.footer-links a');
 
         const cartIcon = document.getElementById('cart-icon');
         const cartSidebar = document.getElementById('cart-sidebar');
@@ -1063,6 +1072,12 @@
         const registerForm = document.getElementById('register-form');
         const switchToRegister = document.getElementById('switch-to-register');
         const switchToLogin = document.getElementById('switch-to-login');
+
+        const infoModal = document.getElementById('info-modal');
+        const closeInfoModal = document.getElementById('close-info-modal');
+        const infoModalTitle = document.getElementById('info-modal-title');
+        const infoModalContent = document.getElementById('info-modal-content');
+
 
         // === State Variables ===
         let cart = [];
@@ -1105,8 +1120,81 @@
             navMenu.classList.toggle('active');
         });
 
-        // === Mobile Account Link to Auth Modal ===
-        // This is no longer necessary as the mobile account link was removed from the HTML.
+        // === User Account & Info Modals ===
+        mobileAccountLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authModal.style.display = 'block';
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
+
+        footerLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modalType = e.target.dataset.modal;
+                showInfoModal(modalType);
+            });
+        });
+
+        closeInfoModal.addEventListener('click', () => {
+            infoModal.style.display = 'none';
+        });
+        
+        function showInfoModal(type) {
+            let title = '';
+            let content = '';
+
+            switch (type) {
+                case 'shop-all':
+                    window.location.href = '#product-grid';
+                    infoModal.style.display = 'none';
+                    return;
+                case 'contact':
+                    title = 'Contact Us';
+                    content = `
+                        <p>Have questions or feedback? We'd love to hear from you!</p>
+                        <p><strong>Email:</strong> support@feeldivine.com</p>
+                        <p><strong>Phone:</strong> +234 800 123 4567</p>
+                        <p><strong>Address:</strong> 123 Divine Avenue, Lagos, Nigeria</p>
+                        <p>We typically respond within 24-48 hours.</p>
+                    `;
+                    break;
+                case 'faqs':
+                    title = 'Frequently Asked Questions';
+                    content = `
+                        <h3>General Questions</h3>
+                        <p><strong>Q: Do you ship internationally?</strong><br>A: Yes, we offer international shipping to most countries. Shipping costs and times vary based on your location.</p>
+                        <p><strong>Q: What payment methods do you accept?</strong><br>A: We accept all major credit/debit cards, bank transfers, and Paystack for secure online payments.</p>
+                        <h3>Product Questions</h3>
+                        <p><strong>Q: What is the difference between body wave and deep wave?</strong><br>A: Body wave hair has a loose, natural-looking S-shaped curl, while deep wave hair has a much tighter, more defined spiral curl.</p>
+                        <p><strong>Q: How do I care for my extensions?</strong><br>A: Use a sulfate-free shampoo and conditioner. Detangle gently with a wide-tooth comb. Avoid excessive heat and let the hair air dry when possible.</p>
+                    `;
+                    break;
+                case 'about':
+                    title = 'About Us';
+                    content = `
+                        <p>At Feel Divine, our mission is to provide high-quality wigs and hair extensions that empower you to look and feel your absolute best. We believe that everyone deserves to experience the confidence that comes with beautiful hair.</p>
+                        <p>We are a proudly Nigerian company committed to sourcing the finest human hair and providing exceptional customer service. Our products are designed to be durable, versatile, and stylish, so you can express your unique beauty without compromise.</p>
+                    `;
+                    break;
+                case 'blog':
+                    title = 'Our Blog';
+                    content = `
+                        <p>Welcome to the Feel Divine Blog! Here you'll find a growing collection of articles on hair care tips, style guides, and the latest trends in the beauty industry.</p>
+                        <p>Stay tuned for our first post, coming soon!</p>
+                    `;
+                    break;
+                default:
+                    title = 'Page Not Found';
+                    content = '<p>The requested content could not be found.</p>';
+            }
+
+            infoModalTitle.textContent = title;
+            infoModalContent.innerHTML = content;
+            infoModal.style.display = 'block';
+        }
 
         // === Product Search Functionality ===
         searchInput.addEventListener('input', () => {
