@@ -1031,6 +1031,7 @@
         if (cart.length === 0) {
             cartBody.innerHTML = '<p class="empty-cart-message">Your bag is empty.</p>';
             document.getElementById('cart-count').textContent = '0';
+            updateCartTotal(); // Added this line to update the total to 0
             return;
         }
         cart.forEach(item => {
@@ -1102,6 +1103,11 @@
     document.getElementById('close-cart').addEventListener('click', () => {
         document.getElementById('cart-sidebar').classList.remove('active');
     });
+    // Event listener for the "Continue Shopping" button
+    document.querySelector('.continue-shopping-btn').addEventListener('click', () => {
+        document.getElementById('cart-sidebar').classList.remove('active');
+    });
+
     document.getElementById('search-icon').addEventListener('click', () => {
         document.getElementById('search-overlay').style.display = 'flex';
     });
@@ -1248,7 +1254,6 @@
     
     // Initial render
     renderCart();
-
 </script>
 </body>
 </html>
